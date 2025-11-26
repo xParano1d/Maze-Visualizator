@@ -16,7 +16,7 @@ class Gui {
             Color textColor = WHITE;
             void Display(){
                 DrawRectangleRounded({posX, posY, width, height}, 0.3, 2, buttonColor);
-                DrawText(text, posX+(width-(TextLength(text)*(width*0.1f))git rebase -i HEAD~3), posY+height*0.3f, width*0.1f, textColor);
+                DrawText(text, posX+(width-(TextLength(text)*(width*0.1f))), posY+height*0.3f, width*0.1f, textColor);
             }
             void ChangeColor(Color buttonC, Color textC){
                 buttonColor = buttonC;

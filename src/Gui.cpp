@@ -27,7 +27,7 @@ void Gui::Init() {
     RightContext = {screenWidth - (smallBoxWidth + offsetX), offsetY, smallBoxWidth, boxHeight};
 
     this->buttons.resize(1);
-    this->buttons[0] = Button{offsetX * 2, offsetY * 4, smallBoxWidth-offsetX, offsetY*3,"JAPIERDOLE"};;
+    this->buttons[0] = Button{offsetX+4, offsetY * 4, smallBoxWidth-8, offsetY*3,"Button Text"};
 }
 
 void Gui::Display() {

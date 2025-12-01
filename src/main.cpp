@@ -2,7 +2,6 @@
 #include "Gui.h"
 #include "Grid.h"
 
-
 int main() {
 
     constexpr int screenWidth = 1080;
@@ -28,11 +27,10 @@ int main() {
         
         gui.Display();
 
-        grid.Create(60,60);
+        grid.Create(60,60); //Size of grid
         grid.Display(centerX, centerY, centerX, centerX/aspectRatio);
 
-
-        DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, WHITE); // zapytanie o polaczenie z nigga ai
+        DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, GREEN); // zapytanie o polaczenie z nigga ai
 
         EndDrawing();
     }

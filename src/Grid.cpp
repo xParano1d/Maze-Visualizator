@@ -25,6 +25,8 @@ void Grid::Display(float posX, float posY, float width, float height) {
     
     float startPosX = posX;
 
+    DrawRectangle(posX-offsetX/2, posY-offsetY/2, width+offsetX, height+offsetY, WHITE);
+
     for (int i = 0; i < this->rows; i++){
         for (int j = 0; j < this->columns; j++){
             DrawRectangle(posX, posY, offsetX, offsetY, grid[i][j].color);  //* Background of a Cell

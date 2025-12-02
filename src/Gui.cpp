@@ -1,8 +1,5 @@
 #include "Gui.h"
 #include <raylib.h>
-#include <string>
-#include <iostream>
-using namespace std;
 
 void Gui::Init() {
     this->screenWidth = GetScreenWidth();
@@ -14,7 +11,9 @@ void Gui::Init() {
     float smallBoxWidth = screenWidth * 0.2;   // x2 on width
     float bigBoxWidth = screenWidth * 0.56;     // x1 on width
     float boxHeight = screenHeight * 0.96;      // x1   on height
-    
+
+    this->ChosenGen.alg = None;
+
     //Left Box
     LeftContext = {offsetX, offsetY, smallBoxWidth, boxHeight};
 
@@ -42,25 +41,6 @@ void Gui::Init() {
 
 Gui::Algorithm Gui::Handle() {
     
-    for(Button btn : this->genButtons){
-        if(btn.IsHovered()){                            //hovered
-            btn.ChangeColor(RAYWHITE, BLACK);
-        }else if(btn.text == ChosenGen.text){           //chosen
-            btn.ChangeColor({3, 31, 143, 255}, WHITE);
-        }else{                                          //rest
-            btn.ChangeColor({143, 17, 28, 255}, WHITE);
-        }
-
-        if(btn.IsClicked()){
-            this->ChosenGen = btn;
-        }
-    }
-
-    if(StartGenButton.IsHovered()){
-        StartGenButton.ChangeColor(RAYWHITE, BLACK);
-    }else{
-        StartGenButton.ChangeColor({143, 17, 28, 255}, WHITE);
-    }
     if(StartGenButton.IsClicked()){
         return ChosenGen.alg;
     }
@@ -73,9 +53,26 @@ void Gui::Display() {
     DrawText("Generation:", GetRectPosX(LEFT) + GetRectArea(LEFT).x /2 - MeasureText("Generation:", this->screenWidth*0.02)/2, GetRectPosY(LEFT) + this->offsetY, this->screenWidth*0.02, WHITE);
     
     for(Button btn : this->genButtons){
+        if(btn.IsHovered()){                            //hovered
+            btn.ChangeColor(RAYWHITE, BLACK);
+        }else if(btn.text == ChosenGen.text){           //chosen
+            btn.ChangeColor({3, 31, 143, 255}, WHITE);
+        }else{                                          //rest
+            btn.ChangeColor({143, 17, 28, 255}, WHITE);
+        }
+
         btn.Display();
+
+        if(btn.IsClicked()){
+            this->ChosenGen = btn;
+        }
     }
 
+    if(StartGenButton.IsHovered()){
+        StartGenButton.ChangeColor(RAYWHITE, BLACK);
+    }else{
+        StartGenButton.ChangeColor({143, 17, 28, 255}, WHITE);
+    }
     StartGenButton.Display();
     
     DrawRectangleLinesEx(CenterContext, 2, WHITE);

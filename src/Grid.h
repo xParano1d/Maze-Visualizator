@@ -15,8 +15,8 @@ class Grid {
         void Create(int rows, int columns);
         void Display(float posX, float posY, float width, float height);
 
+        vector<vector<Cell>> grid;
     private:
         int rows;
         int columns;
-        vector<vector<Cell>> grid;
 };

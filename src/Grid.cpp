@@ -25,7 +25,7 @@ void Grid::Display(float posX, float posY, float width, float height) {
     
     float startPosX = posX;
 
-    DrawRectangle(posX-offsetX/2, posY-offsetY/2, width+offsetX, height+offsetY, WHITE);
+    DrawRectangle(posX-offsetX/3, posY-offsetY/3, width+offsetX/1.5f, height+offsetY/1.5f, WHITE); //? Background of a Grid
 
     for (int i = 0; i < this->rows; i++){
         for (int j = 0; j < this->columns; j++){

@@ -8,15 +8,27 @@ class Gui {
             CENTER,
             RIGHT
         };
-        Rectangle LeftContext;
-        Rectangle CenterContext;
-        Rectangle RightContext;
+    public:
         enum Algorithm {
+            None,
             RecursiveBacktrack,
             HuntNKill,
             Prim,
             Kruskal
         };
+        float screenWidth;
+        float screenHeight;
+        void Init();
+        Algorithm Handle();
+        void Display();
+        void ChangeRectPosition(Context c, float x, float y);
+        Vector2 GetRectArea(Context c);
+        float GetRectPosX(Context c);
+        float GetRectPosY(Context c);
+    private:
+        Rectangle LeftContext;
+        Rectangle CenterContext;
+        Rectangle RightContext;
         struct Button{
             float posX;
             float posY;
@@ -56,13 +68,4 @@ class Gui {
         Button StartGenButton;
         float offsetX;
         float offsetY;
-    public:
-        float screenWidth;
-        float screenHeight;
-        void Init();
-        void Display();
-        void ChangeRectPosition(Context c, float x, float y);
-        Vector2 GetRectArea(Context c);
-        float GetRectPosX(Context c);
-        float GetRectPosY(Context c);
 };

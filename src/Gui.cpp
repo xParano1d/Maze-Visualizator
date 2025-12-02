@@ -28,9 +28,10 @@ void Gui::Init() {
     //Kruskal
     this->genButtons[3] = Button{offsetX+4, offsetY * 18.5f, smallBoxWidth-8, offsetY*3,"Kruskal", Kruskal};
 
-
     //Generate Button
     this->StartGenButton = {offsetX+4, screenHeight-offsetY*5, smallBoxWidth-8, offsetY*3,"Start Generating"};
+
+
 
     //Center Box
     CenterContext = {2 * offsetX + smallBoxWidth, offsetY, bigBoxWidth, boxHeight};
@@ -39,13 +40,8 @@ void Gui::Init() {
     RightContext = {screenWidth - (smallBoxWidth + offsetX), offsetY, smallBoxWidth, boxHeight};
 }
 
-void Gui::Display() {
+Gui::Algorithm Gui::Handle() {
     
-    DrawRectangleLinesEx(LeftContext, 2, WHITE);
-    //todo topText, generateButton, "radio" checklist of algorythms
-    
-    DrawText("Generation:", GetRectPosX(LEFT) + GetRectArea(LEFT).x /2 - MeasureText("Generation:", this->screenWidth*0.02)/2, GetRectPosY(LEFT) + this->offsetY, this->screenWidth*0.02, WHITE);
-
     for(Button btn : this->genButtons){
         if(btn.IsHovered()){                            //hovered
             btn.ChangeColor(RAYWHITE, BLACK);
@@ -54,7 +50,6 @@ void Gui::Display() {
         }else{                                          //rest
             btn.ChangeColor({143, 17, 28, 255}, WHITE);
         }
-        btn.Display();
 
         if(btn.IsClicked()){
             this->ChosenGen = btn;
@@ -67,32 +62,28 @@ void Gui::Display() {
         StartGenButton.ChangeColor({143, 17, 28, 255}, WHITE);
     }
     if(StartGenButton.IsClicked()){
-        switch (ChosenGen.alg){
-        case RecursiveBacktrack:
-            cout << ChosenGen.text << endl;
-            break;
-        case HuntNKill:
-            cout << ChosenGen.text << endl;
-            break;
-        case Prim:
-            cout << ChosenGen.text << endl;
-            break;
-        case Kruskal: 
-            cout << ChosenGen.text << endl;
-            break;
-        default:
-            break;
-        }
+        return ChosenGen.alg;
     }
-    StartGenButton.Display();
 
+    return None;
+}
+
+void Gui::Display() {
+    DrawRectangleLinesEx(LeftContext, 2, WHITE);
+    DrawText("Generation:", GetRectPosX(LEFT) + GetRectArea(LEFT).x /2 - MeasureText("Generation:", this->screenWidth*0.02)/2, GetRectPosY(LEFT) + this->offsetY, this->screenWidth*0.02, WHITE);
+    
+    for(Button btn : this->genButtons){
+        btn.Display();
+    }
+
+    StartGenButton.Display();
+    
     DrawRectangleLinesEx(CenterContext, 2, WHITE);
 
-
-
-
-    
     DrawRectangleLinesEx(RightContext, 2, WHITE);
+
+
+
 }
 
 void Gui::ChangeRectPosition(Context c, float x, float y){

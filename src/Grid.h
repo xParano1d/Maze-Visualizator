@@ -1,8 +1,13 @@
+#pragma once
 #include <vector>
 #include <raylib.h>
 using std::vector;
+
 class Grid {
     public:
+        int rows;
+        int columns;
+
         struct Cell{
             bool rightWall;
             bool leftWall;
@@ -14,9 +19,14 @@ class Grid {
     
         void Create(int rows, int columns);
         void Display(float posX, float posY, float width, float height);
-
         vector<vector<Cell>> grid;
-    private:
-        int rows;
-        int columns;
+
+        enum Position {
+            LEFT,
+            UP,
+            RIGHT,
+            DOWN
+        };
+        vector<Position> UnvisitedNeighbours(int cellRow, int cellCol);
+        int UnvisitedCount();
 };

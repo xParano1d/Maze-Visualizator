@@ -1,6 +1,7 @@
+#pragma once
+#include "../Grid.h"
+
 class RecursiveBacktrack {
-    private:
-        
     public:
-        static void Generate(int currentRow, int currentCol, Grid maze);
+        static void Generate(int currentRow, int currentCol, Grid& maze, bool display);
 };

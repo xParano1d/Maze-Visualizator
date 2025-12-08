@@ -41,7 +41,7 @@ void Gui::Init() {
 
 Gui::Algorithm Gui::GenHandle() {
     
-    if(StartGenButton.IsClicked()){
+    if(StartGenButton.IsClicked() && readyGen){
         return ChosenGen.alg;
     }
 

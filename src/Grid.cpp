@@ -14,11 +14,21 @@ void Grid::Create(int rows, int columns) {
             this->grid[i][j] = Cell{true, true, true, true, {255,0,0,255}};
         }
     }
+    this->grid[0][0].topWall = false;
+    this->grid[rows-1][columns-1].bottomWall = false;
 }
 
-void Grid::Display(float posX, float posY, float width, float height) {
-    posX = posX - width/2;
-    posY = posY - height/2;
+void Grid::Display() {
+    float centerX = GetScreenWidth() / 2;
+    float centerY = GetScreenHeight() / 2;
+    float aspectRatio = GetScreenWidth() / GetScreenHeight();
+
+    float width = centerX;
+    float height = centerX / aspectRatio;
+
+    float posX = centerX - width/2;
+    float posY = centerY - height/2;
+
 
     float offsetX = width / columns;
     float offsetY = height / rows;
@@ -53,22 +63,22 @@ void Grid::Display(float posX, float posY, float width, float height) {
 
 vector<Grid::Position> Grid::UnvisitedNeighbours(int cellRow, int cellCol) {
     vector<Position> v;
-    if(cellCol-1 > 0 && cellCol-1 < (int)grid[cellRow].size()){ //Left
+    if(cellCol > 0 && cellCol < (int)grid[cellRow].size()){     //Left
         if (!grid[cellRow][cellCol - 1].visited) {
             v.push_back(LEFT);
         }
     }
-    if(cellRow-1 > 0 && cellRow-1 < (int)grid.size()){          //Up
+    if(cellRow > 0 && cellRow < (int)grid.size()){              //Up
         if(!grid[cellRow-1][cellCol].visited){
             v.push_back(UP);
         }
     }
-    if(cellCol+1 > 0  && cellCol+1 < (int)grid[cellRow].size()){//Right
+    if(cellCol+1 > 0  && cellCol+1 < (int)grid[cellRow].size()){    //Right
         if(!grid[cellRow][cellCol+1].visited){
             v.push_back(RIGHT);
         }
     }
-    if(cellRow+1 > 0 && cellRow+1 < (int)grid.size()){          //Down
+    if(cellRow+1 > 0 && cellRow+1 < (int)grid.size()){              //Down
         if(!grid[cellRow+1][cellCol].visited){
             v.push_back(DOWN);
         }

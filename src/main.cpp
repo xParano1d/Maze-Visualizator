@@ -10,14 +10,9 @@ int main() {
     //settings
     constexpr int screenWidth = 1080;
     constexpr int screenHeight = 600;
-    int gridWidth = 10;
-    int gridHeight = 10;
+    int gridWidth = 14;
+    int gridHeight = 14;
 
-    //variables 
-    int centerX = screenWidth / 2;
-    int centerY = screenHeight / 2;
-    float aspectRatio = screenWidth / screenHeight;
-    bool updateGrid = true;
 
     Grid grid;
     Gui gui;
@@ -39,27 +34,29 @@ int main() {
             case (Gui::Algorithm::RecursiveBacktrack):
                 grid.Create(gridHeight, gridWidth);
                 // updateGrid = false;
-                RecursiveBacktrack::Generate(0, 0, grid, updateGrid);
+                RecursiveBacktrack::Generate(0, 0, grid);
+                gui.readyGen = true;
                 cout << "done" << endl;
                 break;
             case (Gui::Algorithm::HuntNKill):
                 cout << "HELLOOOO" << endl;
                 break;
             case (Gui::Algorithm::Prim):
+                grid.Create(gridHeight, gridWidth);
                 break;
             case (Gui::Algorithm::Kruskal): 
-                cout << grid.grid[0][0].visited << endl;
                 break;
             case (Gui::Algorithm::None):
+                if(!gui.readyGen){
+                    cout << "generation busy. please wait" << endl;
+                }
                 break;
         }
         gui.Display();
 
-        if(updateGrid){
-            grid.Display(centerX, centerY, centerX, centerX / aspectRatio);
-        }
+        grid.Display();
         
-        DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, GREEN); //! zapytanie o polaczenie z nigga ai
+        DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, BLUE); //! zapytanie o polaczenie z nigga ai
 
         EndDrawing();
     }

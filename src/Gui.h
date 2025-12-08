@@ -20,6 +20,7 @@ class Gui {
         float screenHeight;
         void Init();
         Algorithm GenHandle();
+        bool readyGen=true;
         void Display();
         void ChangeRectPosition(Context c, float x, float y);
         Vector2 GetRectArea(Context c);

@@ -18,7 +18,7 @@ class Grid {
         };
     
         void Create(int rows, int columns);
-        void Display(float posX, float posY, float width, float height);
+        void Display();
         vector<vector<Cell>> grid;
 
         enum Position {

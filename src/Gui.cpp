@@ -19,7 +19,7 @@ void Gui::Init() {
 
     this->genButtons.resize(4);    //? Number of Buttons for Generation Algorithms
     //Recursive Backtrack
-    this->genButtons[0] = Button{offsetX+4, offsetY * 8, smallBoxWidth-8, offsetY*3,"Recursive Backtrack", RecursiveBacktrack};
+    this->genButtons[0] = Button{offsetX+4, offsetY * 8, smallBoxWidth-8, offsetY*3,"Backtracking", Backtracking};
     //Hunt n' Kill
     this->genButtons[1] = Button{offsetX+4, offsetY * 11.5f, smallBoxWidth-8, offsetY*3,"Hunt n' Kill", HuntNKill};
     //Prim
@@ -78,9 +78,6 @@ void Gui::Display() {
     DrawRectangleLinesEx(CenterContext, 2, WHITE);
 
     DrawRectangleLinesEx(RightContext, 2, WHITE);
-
-
-
 }
 
 void Gui::ChangeRectPosition(Context c, float x, float y){

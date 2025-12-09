@@ -16,10 +16,16 @@ class Grid {
             Color color;
             bool visited = false;
         };
-    
+
         void Create(int rows, int columns);
         void Display();
         vector<vector<Cell>> grid;
+
+        struct CellPosition {
+            int row;
+            int col;
+        };
+        vector<CellPosition> stack;
 
         enum Position {
             LEFT,

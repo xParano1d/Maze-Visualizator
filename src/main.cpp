@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include "Gui.h"
 #include "Grid.h"
-#include "./gen/RecursiveBacktrack.h"
+#include "./gen/Backtracking.h"
 
 #include <iostream>
 using namespace std;
@@ -10,9 +10,9 @@ int main() {
     //settings
     constexpr int screenWidth = 1080;
     constexpr int screenHeight = 600;
-    int gridWidth = 14;
-    int gridHeight = 14;
-
+    int gridWidth = 20;
+    int gridHeight = 20;
+    // float vSpeed = 1;                   //visualization speed
 
     Grid grid;
     Gui gui;
@@ -30,11 +30,14 @@ int main() {
         BeginDrawing();
         ClearBackground(BLACK);
         
-        switch (gui.GenHandle()){
-            case (Gui::Algorithm::RecursiveBacktrack):
+        gui.Display();
+
+        switch(gui.GenHandle()){
+            case (Gui::Algorithm::Backtracking):
                 grid.Create(gridHeight, gridWidth);
-                // updateGrid = false;
-                RecursiveBacktrack::Generate(0, 0, grid);
+
+                Backtracking::Generate(0, 0, grid);
+
                 gui.readyGen = true;
                 cout << "done" << endl;
                 break;
@@ -44,16 +47,16 @@ int main() {
             case (Gui::Algorithm::Prim):
                 grid.Create(gridHeight, gridWidth);
                 break;
-            case (Gui::Algorithm::Kruskal): 
+            case (Gui::Algorithm::Kruskal):
+                cout << "chuj: "<< endl;
                 break;
             case (Gui::Algorithm::None):
                 if(!gui.readyGen){
-                    cout << "generation busy. please wait" << endl;
+                    cout << "Generation busy. Please wait" << endl;
                 }
                 break;
         }
-        gui.Display();
-
+        
         grid.Display();
         
         DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, BLUE); //! zapytanie o polaczenie z nigga ai

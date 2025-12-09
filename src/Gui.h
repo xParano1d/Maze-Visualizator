@@ -11,7 +11,7 @@ class Gui {
     public:
         enum Algorithm {
             None,
-            RecursiveBacktrack,
+            Backtracking,
             HuntNKill,
             Prim,
             Kruskal

@@ -2,8 +2,9 @@
 Raylib C++ simple program for generating and solving labyrinths using different algorithms.
 
 TODO:
+
     Features:
-        ☐ step by step algorithms displaying
+        ✔ step by step algorithms displaying @done (12/9/2025, 10:38:31 PM)
         ☐ Gui Settings
         ☐ Gui info??
 

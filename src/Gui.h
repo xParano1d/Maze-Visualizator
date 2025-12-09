@@ -16,13 +16,18 @@ class Gui {
             Prim,
             Kruskal
         };
+        Algorithm genState;
+
         float screenWidth;
         float screenHeight;
+
         void Init();
         Algorithm GenHandle();
         bool readyGen=true;
+
         void Display();
         void ChangeRectPosition(Context c, float x, float y);
+        
         Vector2 GetRectArea(Context c);
         float GetRectPosX(Context c);
         float GetRectPosY(Context c);
@@ -64,6 +69,7 @@ class Gui {
                 return false;
             }
         };
+        
         vector<Button> genButtons;
         Button ChosenGen;
         Button StartGenButton;

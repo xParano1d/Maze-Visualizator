@@ -2,5 +2,6 @@
 #include "../Grid.h"
 class Backtracking {
     public:
-        static void Generate(int currentRow, int currentCol, Grid& maze);
+        static void Init(int startingRow, int startingCol, Grid& maze);
+        static void Generate(Grid& maze);
 };

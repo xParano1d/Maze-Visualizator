@@ -8,22 +8,25 @@ using namespace std;
 
 int main() {
     //settings
-    constexpr int screenWidth = 1080;
+constexpr int screenWidth = 1080;
     constexpr int screenHeight = 600;
     int gridWidth = 20;
     int gridHeight = 20;
-    // float vSpeed = 1;                   //visualization speed
+    float vSpeed = 0.05;                   //visualization speed (delay in seconds between iterations)
+
 
     Grid grid;
     Gui gui;
 
+    
 
     InitWindow(screenWidth, screenHeight, "Labyrinths Visualization");
     SetTargetFPS(60);
     SetRandomSeed((unsigned int)time(NULL));
+    
+    double time;
 
     gui.Init();
-
     grid.Create(gridHeight, gridWidth);
 
     while (!WindowShouldClose()) {
@@ -32,35 +35,72 @@ int main() {
         
         gui.Display();
 
-        switch(gui.GenHandle()){
-            case (Gui::Algorithm::Backtracking):
-                grid.Create(gridHeight, gridWidth);
+        if(gui.readyGen){
+            gui.genState = gui.GenHandle();
 
-                Backtracking::Generate(0, 0, grid);
+            switch(gui.genState){
+                case (Gui::Algorithm::Backtracking):
+                    grid.Create(gridHeight, gridWidth);
+                    Backtracking::Init(0, 0, grid);
 
-                gui.readyGen = true;
-                cout << "done" << endl;
+                    time = GetTime();
+                    gui.readyGen = false;
+
+                    cout << "Backtracking" << endl;
                 break;
-            case (Gui::Algorithm::HuntNKill):
-                cout << "HELLOOOO" << endl;
+                
+                case (Gui::Algorithm::HuntNKill):
+                    cout << "HELLOOOO" << endl;
                 break;
-            case (Gui::Algorithm::Prim):
-                grid.Create(gridHeight, gridWidth);
+                
+                case (Gui::Algorithm::Prim):
+                    grid.Create(gridHeight, gridWidth);
                 break;
-            case (Gui::Algorithm::Kruskal):
-                cout << "chuj: "<< endl;
+                
+                case (Gui::Algorithm::Kruskal):
+                    cout << "time: "<< GetTime() << endl;
                 break;
-            case (Gui::Algorithm::None):
-                if(!gui.readyGen){
-                    cout << "Generation busy. Please wait" << endl;
-                }
+                
+                case (Gui::Algorithm::None):
                 break;
+            }
+
+        }else{
+
+            switch (gui.genState){
+                case (Gui::Algorithm::Backtracking):
+                    if(GetTime()-time > vSpeed){
+                        Backtracking::Generate(grid);
+                        time = GetTime();
+                    }else if(grid.stack.empty()){
+                        gui.readyGen = true;
+                        gui.genState = Gui::Algorithm::None;
+                    }
+                break;
+                
+                case (Gui::Algorithm::HuntNKill):
+                    
+                break;
+               
+                case (Gui::Algorithm::Prim):
+                    
+                break;
+                
+                case (Gui::Algorithm::Kruskal):
+                    
+                break;
+                
+                case (Gui::Algorithm::None):
+                break;
+            }
+
         }
+
+
         
         grid.Display();
         
         DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, BLUE); //! zapytanie o polaczenie z nigga ai
-
         EndDrawing();
     }
 

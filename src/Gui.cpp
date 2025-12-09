@@ -40,11 +40,9 @@ void Gui::Init() {
 }
 
 Gui::Algorithm Gui::GenHandle() {
-    
     if(StartGenButton.IsClicked() && readyGen){
         return ChosenGen.alg;
     }
-
     return None;
 }
 
@@ -68,8 +66,10 @@ void Gui::Display() {
         }
     }
 
-    if(StartGenButton.IsHovered()){
+    if(StartGenButton.IsHovered() && genState == None){
         StartGenButton.ChangeColor(RAYWHITE, BLACK);
+    }else if(genState!=None){
+        StartGenButton.ChangeColor({108, 117, 148, 255}, BLACK);
     }else{
         StartGenButton.ChangeColor({143, 17, 28, 255}, WHITE);
     }
@@ -82,17 +82,19 @@ void Gui::Display() {
 
 void Gui::ChangeRectPosition(Context c, float x, float y){
     switch (c){
-    case LEFT:
-        this->LeftContext.x = x;
-        this->LeftContext.y = y;
+        case LEFT:
+            this->LeftContext.x = x;
+            this->LeftContext.y = y;
         break;
-    case CENTER:
-        this->CenterContext.x = x;
-        this->CenterContext.y = y;
+        
+        case CENTER:
+            this->CenterContext.x = x;
+            this->CenterContext.y = y;
         break;
-    case RIGHT:
-        this->RightContext.x = x;
-        this->RightContext.y = y;
+        
+        case RIGHT:
+            this->RightContext.x = x;
+            this->RightContext.y = y;
         break;
     }
 }
@@ -100,17 +102,19 @@ void Gui::ChangeRectPosition(Context c, float x, float y){
 Vector2 Gui::GetRectArea(Context c){
     Vector2 point = {0};
     switch (c){
-    case LEFT:
-        point.x = this->LeftContext.width;
-        point.y = this->LeftContext.height;
+        case LEFT:
+            point.x = this->LeftContext.width;
+            point.y = this->LeftContext.height;
         break;
-    case CENTER:
-        point.x = this->CenterContext.width;
-        point.y = this->CenterContext.height;
+        
+        case CENTER:
+            point.x = this->CenterContext.width;
+            point.y = this->CenterContext.height;
         break;
-    case RIGHT:
-        point.x = this->RightContext.width;
-        point.y = this->RightContext.height;
+        
+        case RIGHT:
+            point.x = this->RightContext.width;
+            point.y = this->RightContext.height;
         break;
     }
     return point;
@@ -119,14 +123,16 @@ Vector2 Gui::GetRectArea(Context c){
 float Gui::GetRectPosX(Context c) {
     float x;
     switch (c){
-    case LEFT:
-        x = this->LeftContext.x;
+        case LEFT:
+            x = this->LeftContext.x;
         break;
-    case CENTER:
-        x = this->CenterContext.x;
+        
+        case CENTER:
+            x = this->CenterContext.x;
         break;
-    case RIGHT:
-        x = this->RightContext.x;
+        
+        case RIGHT:
+            x = this->RightContext.x;
         break;
     }
     return x;
@@ -135,14 +141,16 @@ float Gui::GetRectPosX(Context c) {
 float Gui::GetRectPosY(Context c) {
     float y;
     switch (c){
-    case LEFT:
-        y = this->LeftContext.y;
+        case LEFT:
+            y = this->LeftContext.y;
         break;
-    case CENTER:
-        y = this->CenterContext.y;
+
+        case CENTER:
+            y = this->CenterContext.y;
         break;
-    case RIGHT:
-        y = this->RightContext.y;
+
+        case RIGHT:
+            y = this->RightContext.y;
         break;
     }
     return y;

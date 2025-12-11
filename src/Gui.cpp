@@ -71,7 +71,7 @@ void Gui::Display() {
     const char* elapsedTime = TextFormat("Time Elapsed: %.2f seconds", algTime);
     DrawText(elapsedTime, GetRectPosX(LEFT) + offsetX, this->screenHeight-(GetRectPosY(LEFT) + this->offsetY*5), this->screenWidth*0.006, WHITE);
 
-    const char* iterationsCount = TextFormat("Algorithm Step: %d", iterations);
+    const char* iterationsCount = TextFormat("Algorithm Step Count: %d", iterations);
     DrawText(iterationsCount, GetRectPosX(LEFT) + offsetX, this->screenHeight-(GetRectPosY(LEFT) + this->offsetY*6), this->screenWidth*0.006, WHITE);
 
 

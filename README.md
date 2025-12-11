@@ -6,8 +6,8 @@ TODO:
     Features:
         ✔ step by step algorithms displaying @done (12/9/2025, 10:38:31 PM)
         ☐ Gui Settings (window size, grid size, speed, etc.)
-        ☐ Gui Gen time
-        ☐ Gui Gen iterations
+        ✔ Gui Gen time @done (11/11/2025, 7:22:08 PM)
+        ✔ Gui Gen iterations @done (11/11/2025, 7:22:12 PM)
         ☐ Gui Solve time
         ☐ Gui Solve iterations
         ☐ save as gif/png
@@ -15,7 +15,7 @@ TODO:
     Algorithms:
         Gen:
             ✔ Backtracking (DFS) @done (12/9/2025, 8:00:12 PM)
-            ☐ Hunt n' kill
+            ✔ Hunt n' kill @done (12/11/2025, 5:31:01 PM)
             ☐ Prim
             ☐ Kruskal
             ☐ Eller?

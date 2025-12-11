@@ -2,29 +2,32 @@
 #include "Gui.h"
 #include "Grid.h"
 #include "./gen/Backtracking.h"
+#include "./gen/HuntnKill.h"
 
 #include <iostream>
 using namespace std;
 
 int main() {
     //settings
-constexpr int screenWidth = 1080;
+    constexpr int screenWidth = 1080;
     constexpr int screenHeight = 600;
     int gridWidth = 20;
     int gridHeight = 20;
-    float vSpeed = 0.05;                   //visualization speed (delay in seconds between iterations)
+    float vSpeed = 0.1;                   //visualization speed (delay in seconds between iterations)
+
+    vSpeed = vSpeed * 0.1;
 
 
     Grid grid;
     Gui gui;
 
-    
 
     InitWindow(screenWidth, screenHeight, "Labyrinths Visualization");
     SetTargetFPS(60);
     SetRandomSeed((unsigned int)time(NULL));
     
     double delay;
+    double genTime;
 
     gui.Init();
     grid.Create(gridHeight, gridWidth);
@@ -36,23 +39,20 @@ constexpr int screenWidth = 1080;
         gui.Display();
 
         if(gui.readyGen){
+
             gui.genState = gui.GenHandle();
 
             switch(gui.genState){
                 case (Gui::Algorithm::Backtracking):
                     grid.Create(gridHeight, gridWidth);
-
                     Backtracking::Init(0, 0, grid);
-
-                    delay = GetTime();
-                    gui.algTime = delay;
-                    
-                    gui.iterations++;
                     gui.readyGen = false;
                 break;
                 
                 case (Gui::Algorithm::HuntNKill):
-                    cout << "HELLOOOO" << endl;
+                    grid.Create(gridHeight, gridWidth);
+                    HuntnKill::Init(0, 0, grid);
+                    gui.readyGen = false;
                 break;
                 
                 case (Gui::Algorithm::Prim):
@@ -66,24 +66,48 @@ constexpr int screenWidth = 1080;
                 case (Gui::Algorithm::None):
                 break;
             }
+            if(!gui.readyGen){
+                gui.iterations++;
+                gui.algTime = 0;
+                
+                delay = GetTime();
+                genTime = GetTime();
+            }
 
         }else{
-
+            gui.algTime = GetTime() - genTime;
+            
             switch (gui.genState){
                 case (Gui::Algorithm::Backtracking):
                     if(GetTime()-delay > vSpeed){
-                        Backtracking::Generate(grid);
-                        gui.algTime = gui.algTime + (GetTime()-delay);
-                        gui.iterations++;
-                        delay = GetTime();
-                    }else if(grid.stack.empty()){
-                        gui.readyGen = true;
-                        gui.genState = Gui::Algorithm::None;
+                        if(!grid.stack.empty()){
+                            Backtracking::Generate(grid);
+                            gui.iterations++;
+                            delay = GetTime();
+                        }else{
+                            if(GetTime()-delay > vSpeed*2){
+                                grid.ChangeEveryCellColor(WHITE);
+                                gui.genState = Gui::Algorithm::None;
+                                gui.readyGen = true;
+                            }
+                        }
                     }
                 break;
                 
                 case (Gui::Algorithm::HuntNKill):
-                    
+                    if(GetTime()-delay > vSpeed){
+                        if(grid.UnvisitedCount()>0){
+                            HuntnKill::Generate(grid);
+                            gui.iterations++;
+                            delay = GetTime();
+                        }else{
+                            if(GetTime()-delay > vSpeed*2){
+                                grid.ChangeEveryCellColor(WHITE);
+                                gui.readyGen = true;
+                                gui.genState = Gui::Algorithm::None;
+                            }
+                        }
+                    }
                 break;
                
                 case (Gui::Algorithm::Prim):
@@ -97,7 +121,6 @@ constexpr int screenWidth = 1080;
                 case (Gui::Algorithm::None):
                 break;
             }
-
         }
 
 

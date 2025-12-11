@@ -18,6 +18,29 @@ void Grid::Create(int rows, int columns) {
     this->grid[rows-1][columns-1].bottomWall = false;
 }
 
+void Grid::ChangeEveryCellColor(Color c) {
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++){
+            this->grid[i][j].color = c;
+        }
+    }
+}
+
+void Grid::HighlightRow(int row, Color c, int time) {
+    highlightRow = true;
+
+    if(row <= 0){
+        highlightedRow = 1;
+    }else{
+        highlightedRow = row;
+    }
+    
+    highlightColor = c;
+    highlightColor.a = 120;
+
+    highlightTime = time;
+}
+
 void Grid::Display() {
     float centerX = GetScreenWidth() / 2;
     float centerY = GetScreenHeight() / 2;
@@ -34,6 +57,7 @@ void Grid::Display() {
     float offsetY = height / rows;
     
     float startPosX = posX;
+
 
     DrawRectangle(posX-offsetX/3, posY-offsetY/3, width+offsetX/1.5f, height+offsetY/1.5f, WHITE); //? Background of a Grid
 
@@ -59,6 +83,16 @@ void Grid::Display() {
         posX = startPosX;
         posY = posY + offsetY;
     }
+    
+    //Row highlighting
+    if(highlightRow){
+        if(highlightTime!=0){
+            DrawRectangle(startPosX, highlightedRow*offsetY, offsetX*columns, offsetY, highlightColor);
+            highlightTime--;
+        }else{
+            highlightRow = false;
+        }
+    }
 }
 
 vector<Grid::Position> Grid::UnvisitedNeighbours(int cellRow, int cellCol) {
@@ -80,6 +114,31 @@ vector<Grid::Position> Grid::UnvisitedNeighbours(int cellRow, int cellCol) {
     }
     if(cellRow+1 > 0 && cellRow+1 < (int)grid.size()){              //Down
         if(!grid[cellRow+1][cellCol].visited){
+            v.push_back(DOWN);
+        }
+    }
+    return v;
+}
+
+vector<Grid::Position> Grid::VisitedNeighbours(int cellRow, int cellCol) {
+    vector<Position> v;
+    if(cellCol > 0 && cellCol < (int)grid[cellRow].size()){     //Left
+        if (grid[cellRow][cellCol - 1].visited) {
+            v.push_back(LEFT);
+        }
+    }
+    if(cellRow > 0 && cellRow < (int)grid.size()){              //Up
+        if(grid[cellRow-1][cellCol].visited){
+            v.push_back(UP);
+        }
+    }
+    if(cellCol+1 > 0  && cellCol+1 < (int)grid[cellRow].size()){//Right
+        if(grid[cellRow][cellCol+1].visited){
+            v.push_back(RIGHT);
+        }
+    }
+    if(cellRow+1 > 0 && cellRow+1 < (int)grid.size()){          //Down
+        if(grid[cellRow+1][cellCol].visited){
             v.push_back(DOWN);
         }
     }

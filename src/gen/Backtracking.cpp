@@ -8,24 +8,15 @@ void Backtracking::Init(int startingRow, int startingCol, Grid& maze) {
 }
 
 void Backtracking::Generate(Grid &maze) {
-    
-    int currentRow;
-    int currentCol;
-    
-    int random;
-
-    int neighbourRow;
-    int neighbourCol;
-    
-
-    Grid::Position neighbourPos;
-
-    ////While the stack is not empty
+    ////While the stack is not empty (recursive)
     //one iteration:
     
-    currentRow = maze.stack.back().row;
-    currentCol = maze.stack.back().col;
+    int currentRow = maze.stack.back().row;
+    int currentCol = maze.stack.back().col;
     maze.stack.pop_back();
+
+
+    Grid::Position neighbourPos;
 
     //If the current cell has any neighbours which have not been visited
     vector<Grid::Position> v = maze.UnvisitedNeighbours(currentRow, currentCol);
@@ -34,11 +25,11 @@ void Backtracking::Generate(Grid &maze) {
         //Push the current cell to the stack
         maze.stack.push_back({currentRow, currentCol});
         
-        neighbourRow = currentRow;
-        neighbourCol = currentCol;
+        int neighbourRow = currentRow;
+        int neighbourCol = currentCol;
 
         //Choose one of the unvisited neighbours
-        random = GetRandomValue(0, (int)v.size()-1);
+        int random = GetRandomValue(0, (int)v.size()-1);
 
         switch (v[random]){
             case Grid::Position::LEFT:     //left

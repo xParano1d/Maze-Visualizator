@@ -8,19 +8,6 @@ class Grid {
         int rows;
         int columns;
 
-        struct Cell{
-            bool rightWall;
-            bool leftWall;
-            bool topWall;
-            bool bottomWall;
-            Color color;
-            bool visited = false;
-        };
-
-        void Create(int rows, int columns);
-        void Display();
-        vector<vector<Cell>> grid;
-
         struct CellPosition {
             int row;
             int col;
@@ -34,5 +21,27 @@ class Grid {
             DOWN
         };
         vector<Position> UnvisitedNeighbours(int cellRow, int cellCol);
+        vector<Position> VisitedNeighbours(int cellRow, int cellCol);
         int UnvisitedCount();
+
+        struct Cell{
+            bool rightWall;
+            bool leftWall;
+            bool topWall;
+            bool bottomWall;
+            Color color;
+            bool visited = false;
+        };
+        vector<vector<Cell>> grid;
+
+        void Create(int rows, int columns);
+        void Display();
+
+        void ChangeEveryCellColor(Color c);
+        void HighlightRow(int row, Color c, int time);
+    private:
+        bool highlightRow = false;
+        int highlightedRow;
+        Color highlightColor;
+        int highlightTime=0;
 };

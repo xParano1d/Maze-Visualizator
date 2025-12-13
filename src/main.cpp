@@ -3,6 +3,7 @@
 #include "Grid.h"
 #include "./gen/Backtracking.h"
 #include "./gen/HuntnKill.h"
+#include "./gen/Prim.h"
 
 #include <iostream>
 using namespace std;
@@ -13,8 +14,8 @@ int main() {
     constexpr int screenHeight = 600;
     int gridWidth = 20;
     int gridHeight = 20;
-    float vSpeed = 0.1;                   //visualization speed (delay in seconds between iterations)
-
+    float vSpeed = 1;                   //visualization speed (delay in seconds between iterations)
+    // 0.1 -> fast      5 -> slow
     vSpeed = vSpeed * 0.1;
 
 
@@ -57,6 +58,8 @@ int main() {
                 
                 case (Gui::Algorithm::Prim):
                     grid.Create(gridHeight, gridWidth);
+                    Prim::Init(0, 0, grid);
+                    gui.readyGen = false;
                 break;
                 
                 case (Gui::Algorithm::Kruskal):
@@ -66,10 +69,10 @@ int main() {
                 case (Gui::Algorithm::None):
                 break;
             }
+
             if(!gui.readyGen){
-                gui.iterations++;
                 gui.algTime = 0;
-                
+                gui.iterations++;
                 delay = GetTime();
                 genTime = GetTime();
             }
@@ -111,10 +114,23 @@ int main() {
                 break;
                
                 case (Gui::Algorithm::Prim):
-                    
+                    if(GetTime()-delay > vSpeed){
+                        if(!Prim::frontierList.empty()){
+                            Prim::Generate(grid);
+                            gui.iterations++;
+                            delay = GetTime();
+                        }else{
+                            if(GetTime()-delay > vSpeed*2){
+                                grid.ChangeEveryCellColor(WHITE);
+                                gui.readyGen = true;
+                                gui.genState = Gui::Algorithm::None;
+                            }
+                        }
+                    }
                 break;
                 
                 case (Gui::Algorithm::Kruskal):
+
                     
                 break;
                 

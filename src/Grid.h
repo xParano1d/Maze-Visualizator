@@ -20,10 +20,7 @@ class Grid {
             RIGHT,
             DOWN
         };
-        vector<Position> UnvisitedNeighbours(int cellRow, int cellCol);
-        vector<Position> VisitedNeighbours(int cellRow, int cellCol);
-        int UnvisitedCount();
-
+        
         struct Cell{
             bool rightWall;
             bool leftWall;
@@ -39,6 +36,13 @@ class Grid {
 
         void ChangeEveryCellColor(Color c);
         void HighlightRow(int row, Color c, int time);
+
+
+        vector<CellPosition> GetUnvisitedNeighboursPosition(int cellRow, int cellCol);
+        vector<Position> UnvisitedNeighbours(int cellRow, int cellCol);
+        vector<Position> VisitedNeighbours(int cellRow, int cellCol);
+        int UnvisitedCount();
+
     private:
         bool highlightRow = false;
         int highlightedRow;

@@ -5,6 +5,7 @@ class HuntnKill {
     private:
         inline static int currentRow;
         inline static int currentCol;
+        inline static int highlightIteration;
 
         static void Hunt(Grid& maze);
     public:

@@ -11,6 +11,7 @@ TODO:
         ✔ Gui Solve time @done (12/14/2025, 8:02:50 PM)
         ✔ Gui Solve iterations @done (12/14/2025, 8:02:52 PM)
         ☐ save as gif/png
+        ☐ create an icon image for .exe file
 
     Algorithms:
         Gen:
@@ -28,5 +29,5 @@ TODO:
 
     Issues to fix:
         ☐ cell walls scaling and overall graphics improvement needed
-        ☐ kruskal highlighting row one time per iteration 
-        ☐ IsHovered() for selected button should have the same color
+        ☐ Hunt n' Kill highlighting row one time per iteration 
+        ✔ IsHovered() for selected button should have the same color @done (12/15/2025, 1:26:30 AM)

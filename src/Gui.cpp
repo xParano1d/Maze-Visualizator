@@ -71,12 +71,12 @@ void Gui::Display() {
     for(Button btn : this->genButtons){
         if(btn.IsHovered()){                            //hovered
             if(btn.text == ChosenGen.text){
-                btn.ChangeColor({143, 36, 17, 255}, BLACK);
+                btn.ChangeColor({27, 227, 84, 255}, WHITE);
             }else{
                 btn.ChangeColor(RAYWHITE, BLACK);
             }
         }else if(btn.text == ChosenGen.text){           //chosen
-            btn.ChangeColor({143, 36, 17, 255}, WHITE);
+            btn.ChangeColor({27, 227, 84, 255}, BLACK);
         }else{                                          //base color
             btn.ChangeColor({143, 17, 28, 255}, WHITE);
         }
@@ -118,15 +118,15 @@ void Gui::Display() {
     for(Button btn : this->solveButtons){
         if(btn.IsHovered() && solveReady){                      //hovered
             if(btn.text == ChosenSolve.text){
-                btn.ChangeColor({52, 177, 235, 255}, BLACK);
+                btn.ChangeColor({27, 227, 84, 255}, WHITE);
             }else{
                 btn.ChangeColor(RAYWHITE, BLACK);
             }
         }else if(btn.text == ChosenSolve.text && solveReady){  //chosen
-            btn.ChangeColor({52, 177, 235, 255}, WHITE);
+            btn.ChangeColor({27, 227, 84, 255}, BLACK);
         }else{
             if(solveReady){
-                btn.ChangeColor({55, 52, 235, 255}, WHITE);     //unlocked
+                btn.ChangeColor({46, 52, 230, 255}, WHITE);     //base color
             }else{
                 btn.ChangeColor({108, 117, 148, 255}, BLACK);   //locked
             }
@@ -151,7 +151,7 @@ void Gui::Display() {
     }else if(choosenAlgorithm!=Algorithm::None || !solveReady){                                 //locked
         StartSolvingButton.ChangeColor({108, 117, 148, 255}, BLACK);
     }else{                                                                                      //base color
-        StartSolvingButton.ChangeColor({143, 17, 28, 255}, WHITE);
+        StartSolvingButton.ChangeColor({46, 52, 230, 255}, WHITE);
     }
     StartSolvingButton.Display();
 }

@@ -18,7 +18,7 @@ int main() {
     int startingRow = 0;
     int startingCol = 0;
 
-    float vSpeed = 100;     //visualization speed 
+    float vSpeed = 20;     //visualization speed 
     vSpeed = 1 / vSpeed;    //heighest value -> faster
     
 

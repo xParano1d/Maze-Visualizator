@@ -7,7 +7,7 @@ void HuntnKill::Hunt(Grid &maze) {
 
     //Scan the grid from the top-left corner to bottom-right
     for (int i = 0; i < (int)maze.grid.size(); i++){        
-        maze.HighlightRow(i, {27, 227, 84, 255}); //TODO: make this slower runing not in loops but just one iteration (first loop deleted, just i++ every call)
+        
         for (int j = 0; j < (int)maze.grid[i].size(); j++){
             if(!unvisitedCellFound){
                 v = maze.VisitedNeighbours(i, j);
@@ -23,6 +23,7 @@ void HuntnKill::Hunt(Grid &maze) {
             }
         }
         if(unvisitedCellFound){
+            maze.HighlightRow(i, {27, 227, 84, 255});
             break;
         }
     }

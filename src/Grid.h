@@ -62,6 +62,8 @@ class Grid {
         vector<Position> UnvisitedNeighbours(int cellRow, int cellCol);
         vector<Position> VisitedNeighbours(int cellRow, int cellCol);
         int UnvisitedCount();
+
+        
         
     private:
 

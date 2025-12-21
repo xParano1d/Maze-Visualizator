@@ -3,7 +3,12 @@
 
 class WallFollower {
     private:
-        
+        inline static int currentRow;
+        inline static int currentCol;
+        inline static Grid::Position currentDirection;
+
     public:
-        static void Init(Grid& maze);
+        static void Init(int startingRow, int startingCol, Grid& maze);
+        static void Solve(Grid &maze);
+        inline static bool Solved;
 };

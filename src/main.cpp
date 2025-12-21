@@ -18,7 +18,7 @@ int main() {
     int startingRow = 0;
     int startingCol = 0;
 
-    float vSpeed = 20;     //visualization speed 
+    float vSpeed = 60;     //visualization speed 
     vSpeed = 1 / vSpeed;    //heighest value -> faster
     
 
@@ -211,7 +211,7 @@ int main() {
         
         grid.Display();
         
-        DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, GREEN); //! zapytanie o polaczenie z nigga ai
+        // DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, GREEN); //! zapytanie o polaczenie z nigga ai
         EndDrawing();
     }
 

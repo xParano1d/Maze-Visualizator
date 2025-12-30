@@ -1,7 +1,8 @@
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #pragma once
 #include <vector>
 #include <raylib.h>
-using std::vector;
+using namespace std;
 
 class Grid {
     public:

@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#pragma once
 #include <raylib.h>
 #include <vector>
 using std::vector;

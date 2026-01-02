@@ -8,6 +8,7 @@
 #include "./gen/Kruskal.h"
 
 #include "./solve/WallFollower.h"
+#include "./solve/BreadthFirstSearch.h"
 
 
 int main() {
@@ -93,6 +94,7 @@ int main() {
                 break;
 
                 case (Gui::Algorithm::BreadthFirstSearch):
+                    BreadthFirstSearch::Init(0, 0, grid);
                     algType = false;
                 break;
 
@@ -201,9 +203,16 @@ int main() {
                 break;
 
                 case (Gui::Algorithm::BreadthFirstSearch):
-
-                    gui.ready = true;
-                    gui.choosenAlgorithm = Gui::Algorithm::None;
+                    if(GetTime()-delay > vSpeed){
+                        if(!grid.Solved){
+                            BreadthFirstSearch::Solve(grid);
+                            gui.solveIterations++;
+                            delay = GetTime();
+                        }else{
+                            gui.ready = true;
+                            gui.choosenAlgorithm = Gui::Algorithm::None;
+                        }
+                    }
                 break;
 
                 case (Gui::Algorithm::Pledge):

@@ -17,62 +17,67 @@ void Prim::Init(int startingRow, int startingCol, Grid &maze) {
 }
 
 void Prim::Generate(Grid &maze) {
-    //Pick a Random Candidate
-    int randomTarget = GetRandomValue(0, (int)frontierList.size() - 1);
-    int TargetRow = frontierList[randomTarget].row;
-    int TargetCol = frontierList[randomTarget].col;
+    if(!frontierList.empty()){  //repeat until
 
-
-    //Look at the neighbors of the Target Cell that are Already Visited
-    vector<Grid::Position> v = maze.VisitedNeighbours(TargetRow, TargetCol);
-    //Pick one random Visited Neighbour
-    int randomNeighbour = GetRandomValue(0, (int)v.size()-1);
-
-    //Remove the wall between the current cell and the chosen cell
-    switch (v[randomNeighbour]){
-        case Grid::Position::LEFT:
-            maze.grid[TargetRow][TargetCol].leftWall = false;
-            maze.grid[TargetRow][TargetCol-1].rightWall = false;
-        break;
-
-        case Grid::Position::UP:
-            maze.grid[TargetRow][TargetCol].topWall = false;
-            maze.grid[TargetRow-1][TargetCol].bottomWall = false;
-        break;
-
-        case Grid::Position::RIGHT:
-            maze.grid[TargetRow][TargetCol].rightWall = false;
-            maze.grid[TargetRow][TargetCol+1].leftWall = false;
-        break;
-
-        case Grid::Position::DOWN:
-            maze.grid[TargetRow][TargetCol].bottomWall = false;
-            maze.grid[TargetRow+1][TargetCol].topWall = false;
-        break;
-    }
-
-    //  Mark the Target Cell as visited
-    maze.grid[TargetRow][TargetCol].visited = true;
-    maze.grid[TargetRow][TargetCol].color = {108, 117, 148, 255};
-
-    //Remove the Target Cell from the Frontier List
-    frontierList.erase(frontierList.begin() + randomTarget);
-
-    //Expand the Frontier:
-    vector<Grid::CellPosition> neighboursList = maze.GetUnvisitedNeighboursPosition(TargetRow, TargetCol);
-    // Get all neighbors of the NEW cell that are NOT visited yet
-    for (Grid::CellPosition n : neighboursList) {
-        bool alreadyInList = false;
-        for (Grid::CellPosition f : frontierList) {
-            if (f.row == n.row && f.col == n.col) {
-                alreadyInList = true;
-                break;
+        //Pick a Random Candidate
+        int randomTarget = GetRandomValue(0, (int)frontierList.size() - 1);
+        int TargetRow = frontierList[randomTarget].row;
+        int TargetCol = frontierList[randomTarget].col;
+    
+    
+        //Look at the neighbors of the Target Cell that are Already Visited
+        vector<Grid::Position> v = maze.VisitedNeighbours(TargetRow, TargetCol);
+        //Pick one random Visited Neighbour
+        int randomNeighbour = GetRandomValue(0, (int)v.size()-1);
+    
+        //Remove the wall between the current cell and the chosen cell
+        switch (v[randomNeighbour]){
+            case Grid::Position::LEFT:
+                maze.grid[TargetRow][TargetCol].leftWall = false;
+                maze.grid[TargetRow][TargetCol-1].rightWall = false;
+            break;
+    
+            case Grid::Position::UP:
+                maze.grid[TargetRow][TargetCol].topWall = false;
+                maze.grid[TargetRow-1][TargetCol].bottomWall = false;
+            break;
+    
+            case Grid::Position::RIGHT:
+                maze.grid[TargetRow][TargetCol].rightWall = false;
+                maze.grid[TargetRow][TargetCol+1].leftWall = false;
+            break;
+    
+            case Grid::Position::DOWN:
+                maze.grid[TargetRow][TargetCol].bottomWall = false;
+                maze.grid[TargetRow+1][TargetCol].topWall = false;
+            break;
+        }
+    
+        //  Mark the Target Cell as visited
+        maze.grid[TargetRow][TargetCol].visited = true;
+        maze.grid[TargetRow][TargetCol].color = {108, 117, 148, 255};
+    
+        //Remove the Target Cell from the Frontier List
+        frontierList.erase(frontierList.begin() + randomTarget);
+    
+        //Expand the Frontier:
+        vector<Grid::CellPosition> neighboursList = maze.GetUnvisitedNeighboursPosition(TargetRow, TargetCol);
+        // Get all neighbors of the NEW cell that are NOT visited yet
+        for (Grid::CellPosition n : neighboursList) {
+            bool alreadyInList = false;
+            for (Grid::CellPosition f : frontierList) {
+                if (f.row == n.row && f.col == n.col) {
+                    alreadyInList = true;
+                    break;
+                }
+            }
+            if (!alreadyInList) {
+                frontierList.push_back(n);
             }
         }
-        if (!alreadyInList) {
-            frontierList.push_back(n);
-        }
+    
+        HighlightFrontier(maze);
+    }else{
+        maze.generated = true;
     }
-
-    HighlightFrontier(maze);
 }

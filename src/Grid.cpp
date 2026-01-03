@@ -6,8 +6,6 @@ void Grid::ClearSolution() {
     deadEndPath.clear();
 
     Solved = false;
-
-    ChangeEveryCellColor(WHITE);
 }
 
 void Grid::Create(int rows, int columns) {

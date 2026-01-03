@@ -9,6 +9,7 @@
 
 #include "./solve/WallFollower.h"
 #include "./solve/BreadthFirstSearch.h"
+#include "./solve/DeadEndFiller.h"
 
 
 int main() {
@@ -97,27 +98,28 @@ int main() {
                     BreadthFirstSearch::Init(0, 0, grid);
                     algType = false;
                 break;
-
-                case (Gui::Algorithm::Pledge):
-                    algType = false;
-                break;
-
+                
                 case (Gui::Algorithm::DeadEndFiller):
                     algType = false;
                     std::cout << "test" << std::endl;
                 break;
-
-                case (Gui::Algorithm::Dijksta):
+                
+                case (Gui::Algorithm::Dijkstra):
                     algType = false;
                 break;
-
+                
                 case (Gui::Algorithm::AStar):
                     algType = false;
                 break;
+
+                case (Gui::Algorithm::Tremaux):
+                    algType = false;
+                break;
             }
-    
+            
             if(!gui.ready){
                 if(algType){        //GENERATION
+
                     gui.genIterations = 0;
                     gui.genIterations++;
 
@@ -140,48 +142,32 @@ int main() {
             switch (gui.choosenAlgorithm){
                 case (Gui::Algorithm::Backtracking):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.stack.empty()){
+                        if(!grid.generated){
                             Backtracking::Generate(grid);
-                            gui.genIterations++;
-                            delay = GetTime();
-                        }else{
-                            grid.generated = true;
                         }
                     }
                 break;
                 
                 case (Gui::Algorithm::HuntNKill):
                     if(GetTime()-delay > vSpeed){
-                        if(grid.UnvisitedCount()>0){
+                        if(!grid.generated){
                             HuntnKill::Generate(grid);
-                            gui.genIterations++;
-                            delay = GetTime();
-                        }else{
-                            grid.generated = true;
                         }
                     }
                 break;
                
                 case (Gui::Algorithm::Prim):
                     if(GetTime()-delay > vSpeed){
-                        if(!Prim::frontierList.empty()){
+                        if(!grid.generated){
                             Prim::Generate(grid);
-                            gui.genIterations++;
-                            delay = GetTime();
-                        }else{
-                            grid.generated = true;
                         }
                     }
                 break;
                 
                 case (Gui::Algorithm::Kruskal):
                     if(GetTime()-delay > vSpeed){
-                        if(!Kruskal::edgeList.empty()){
+                        if(!grid.generated){
                             Kruskal::Generate(grid);
-                            gui.genIterations++;
-                            delay = GetTime();
-                        }else{
-                            grid.generated = true;
                         }
                     }
                 break;
@@ -195,11 +181,6 @@ int main() {
                     if(GetTime()-delay > vSpeed){
                         if(!grid.Solved){
                             WallFollower::Solve(grid);
-                            gui.solveIterations++;
-                            delay = GetTime();
-                        }else{
-                            gui.ready = true;
-                            gui.choosenAlgorithm = Gui::Algorithm::None;
                         }
                     }
                 break;
@@ -208,53 +189,52 @@ int main() {
                     if(GetTime()-delay > vSpeed){
                         if(!grid.Solved){
                             BreadthFirstSearch::Solve(grid);
-                            gui.solveIterations++;
-                            delay = GetTime();
-                        }else{
-                            if(GetTime()-delay > vSpeed*3){
-                                gui.ready = true;
-                                gui.choosenAlgorithm = Gui::Algorithm::None;
-                                grid.ChangeEveryCellColor(WHITE);
-                            }
                         }
                     }
                 break;
-
-                case (Gui::Algorithm::Pledge):
-
-                    gui.ready = true;
-                    gui.choosenAlgorithm = Gui::Algorithm::None;
-                break;
-
+                
                 case (Gui::Algorithm::DeadEndFiller):
-                    gui.solveIterations++;
-                    gui.ready = true;
-                    gui.choosenAlgorithm = Gui::Algorithm::None;
+                    if(GetTime()-delay > vSpeed){
+                        if(!grid.Solved){
+                            DeadEndFiller::Solve(grid);
+                        }
+                    }
+                break;
+                    
+                case (Gui::Algorithm::Dijkstra):
+                    grid.Solved = true;
+                break;
+                
+                case (Gui::Algorithm::AStar):  
+                    grid.Solved = true;
                 break;
 
-                case (Gui::Algorithm::Dijksta):
-
-                    gui.ready = true;
-                    gui.choosenAlgorithm = Gui::Algorithm::None;
-                break;
-
-                case (Gui::Algorithm::AStar):
-
-                    gui.ready = true;
-                    gui.choosenAlgorithm = Gui::Algorithm::None;
+                case (Gui::Algorithm::Tremaux):
+                    grid.Solved = true;
                 break;
             }
-
+            
 
             gui.solveReady = grid.generated;
-
-            if(grid.generated){
-                if(GetTime()-delay > vSpeed*2){
+            
+            //if        generated          or            solved
+            if((grid.generated && algType) || (grid.Solved && !algType)){
+                if(GetTime()-delay > vSpeed*3){
                     grid.ChangeEveryCellColor(WHITE);
                     gui.ready = true;
                     gui.choosenAlgorithm = Gui::Algorithm::None;
                 }
+            }else{
+                if(GetTime()-delay > vSpeed){
+                    delay = GetTime();
+                    if(algType){
+                        gui.genIterations++;
+                    }else{
+                        gui.solveIterations++;
+                    }
+                }
             }
+            
 
             if(algType){
                 gui.genTime = GetTime() - genTime;

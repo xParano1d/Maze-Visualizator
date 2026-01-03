@@ -53,14 +53,14 @@ void Gui::Init() {
     this->solveButtons[0] = Button{GetRectPosX(RIGHT)+12, offsetY * 8, smallBoxWidth-24, offsetY*3, "Wall Follower", WallFollower};
     //Breadth First Search
     this->solveButtons[1] = Button{GetRectPosX(RIGHT)+12, offsetY * 11.5f, smallBoxWidth-24, offsetY*3, "BreadthFirstSearch", BreadthFirstSearch};
-    //Pledge
-    this->solveButtons[2] = Button{GetRectPosX(RIGHT)+12, offsetY * 15, smallBoxWidth-24, offsetY*3, "Pledge", Pledge};
     //DeadEndFiller
-    this->solveButtons[3] = Button{GetRectPosX(RIGHT)+12, offsetY * 18.5f, smallBoxWidth-24, offsetY*3, "Dead End Filler", DeadEndFiller};
+    this->solveButtons[2] = Button{GetRectPosX(RIGHT)+12, offsetY * 15, smallBoxWidth-24, offsetY*3, "Dead End Filler", DeadEndFiller};
     //Dijkstra
-    this->solveButtons[4] = Button{GetRectPosX(RIGHT)+12, offsetY * 22, smallBoxWidth-24, offsetY*3, "Dijkstra", Dijksta};
+    this->solveButtons[3] = Button{GetRectPosX(RIGHT)+12, offsetY * 18.5f, smallBoxWidth-24, offsetY*3, "Dijkstra", Dijkstra};
     //A*
-    this->solveButtons[5] = Button{GetRectPosX(RIGHT)+12, offsetY * 25.5f, smallBoxWidth-24, offsetY*3, "A* (A Star)", AStar};
+    this->solveButtons[4] = Button{GetRectPosX(RIGHT)+12, offsetY * 22, smallBoxWidth-24, offsetY*3, "A* (A Star)", AStar};
+    //Trémaux
+    this->solveButtons[5] = Button{GetRectPosX(RIGHT)+12, offsetY * 25.5f, smallBoxWidth-24, offsetY*3, "Trémaux", Tremaux};
 
     //Generate Button
     this->StartSolvingButton = {GetRectPosX(RIGHT)+8, screenHeight-offsetY*5, smallBoxWidth-16, offsetY*3, "Start Solving"};

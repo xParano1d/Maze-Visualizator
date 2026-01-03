@@ -30,10 +30,10 @@ class Gui {
             //Solve
             WallFollower,
             BreadthFirstSearch,
-            Pledge,
             DeadEndFiller,
-            Dijksta,
-            AStar
+            Dijkstra,
+            AStar,
+            Tremaux
         };
         Algorithm choosenAlgorithm;
 
@@ -43,7 +43,7 @@ class Gui {
         double solveTime = 0;
         int solveIterations = 0;
 
-        bool ready=true;
+        bool ready = true;
         bool solveReady = false;
         Algorithm MainButtonHandler();
 

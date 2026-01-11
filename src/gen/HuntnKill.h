@@ -1,19 +1,19 @@
 #pragma once
-#include "../Grid.h"
+#include "../Maze.h"
 
 class HuntnKill {
     private:
         inline static int highlightIterationRow;
         inline static int highlightIterationCol;
-        inline static Grid::Cell *pLastCell;
+        inline static Maze::Cell *pLastCell;
         inline static Color lastCellColor;
         inline static bool unvisitedCellFound;
 
         inline static int currentRow;
         inline static int currentCol;
 
-        static void Hunt(Grid& maze);
+        static void Hunt(Maze& maze);
     public:
-        static void Init(int startingRow, int startingCol, Grid &maze);
-        static void Generate(Grid& maze);
+        static void Init(int startingRow, int startingCol, Maze &maze);
+        static void Generate(Maze& maze);
 };

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Grid.h"
+#include "../Maze.h"
 
 class WallFollower {
     private:
@@ -8,9 +8,9 @@ class WallFollower {
 
         inline static int currentRow;
         inline static int currentCol;
-        inline static Grid::Position currentDirection;
+        inline static Maze::Direction currentDirection;
 
     public:
-        static void Init(int startingRow, int startingCol, Grid& maze);
-        static void Solve(Grid &maze);
+        static void Init(int startingRow, int startingCol, Maze& maze);
+        static void Solve(Maze &maze);
 };

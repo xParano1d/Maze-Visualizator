@@ -1,9 +1,9 @@
 #pragma once
-#include "../Grid.h"
+#include "../Maze.h"
 class Backtracking {
     private:
-        inline static vector<Grid::CellPosition> cellStack;
+        inline static vector<Maze::CellPosition> cellStack;
     public:
-        static void Init(int startingRow, int startingCol, Grid& maze);
-        static void Generate(Grid& maze);
+        static void Init(int startingRow, int startingCol, Maze& maze);
+        static void Generate(Maze& maze);
 };

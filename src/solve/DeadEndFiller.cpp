@@ -1,38 +1,38 @@
 #include "DeadEndFiller.h"
 
-int DeadEndFiller::getwallCount(int row, int col, Grid& maze) {
+int DeadEndFiller::getwallCount(int row, int col, Maze& maze) {
     //check wall count for current cell
     int wallCount = maze.grid[row][col].wallCount();
     //add visited neighbours that are connected as a wallcount
-    vector<Grid::Position> v = maze.VisitedNeighbours(row, col);
-    for(Grid::Position p : v){
+    vector<Maze::Direction> v = maze.VisitedNeighbours(row, col);
+    for(Maze::Direction p : v){
         int neighbourRow = row;
         int neighbourCol = col;
         bool validNeighbour = false;
         
         switch (p){
-            case Grid::Position::LEFT:
+            case Maze::Direction::LEFT:
                 neighbourCol--;
                 if(!maze.grid[row][col].leftWall && !maze.grid[neighbourRow][neighbourCol].rightWall){
                     validNeighbour = true;
                 }
             break;
                 
-            case Grid::Position::UP:
+            case Maze::Direction::UP:
                 neighbourRow--;
                 if(!maze.grid[row][col].topWall && !maze.grid[neighbourRow][neighbourCol].bottomWall){
                     validNeighbour = true;
                 }
             break;
 
-            case Grid::Position::RIGHT:
+            case Maze::Direction::RIGHT:
                 neighbourCol++;
                 if(!maze.grid[row][col].rightWall && !maze.grid[neighbourRow][neighbourCol].leftWall){
                     validNeighbour = true;
                 }
             break;
             
-            case Grid::Position::DOWN:
+            case Maze::Direction::DOWN:
                 neighbourRow++;
                 if(!maze.grid[row][col].bottomWall && !maze.grid[neighbourRow][neighbourCol].topWall){
                     validNeighbour = true;
@@ -47,7 +47,7 @@ int DeadEndFiller::getwallCount(int row, int col, Grid& maze) {
     return wallCount;
 }
 
-void DeadEndFiller::Init(int startingRow, int startingCol, int endingRow, int endingCol, Grid &maze) {
+void DeadEndFiller::Init(int startingRow, int startingCol, int endingRow, int endingCol, Maze &maze) {
     deadEnd.clear();
     maze.UnvisitEveryCell();
     
@@ -55,7 +55,7 @@ void DeadEndFiller::Init(int startingRow, int startingCol, int endingRow, int en
     exitCell = {endingRow, endingCol};
     Filled = false;
 }
-void DeadEndFiller::Solve(Grid &maze) {
+void DeadEndFiller::Solve(Maze &maze) {
     if(!Filled){
         int wallCount;
         if(deadEnd.empty()){
@@ -67,7 +67,7 @@ void DeadEndFiller::Solve(Grid &maze) {
                         wallCount = getwallCount(i, j, maze);
 
                         if(wallCount == 3){
-                            Grid::CellPosition pos = {i, j};
+                            Maze::CellPosition pos = {i, j};
                             //filling every cell with wallCount>3
                             if( pos!=startCell && pos!=exitCell ){
                                 //that isn't a start or an exit
@@ -93,35 +93,35 @@ void DeadEndFiller::Solve(Grid &maze) {
             deadEnd.pop_back();
             
             //and its neighbours (until we get to hallway)
-            vector<Grid::Position> v = maze.UnvisitedNeighbours(currentCell);
-            for(Grid::Position p : v){
+            vector<Maze::Direction> v = maze.UnvisitedNeighbours(currentCell);
+            for(Maze::Direction p : v){
                 int neighbourRow = currentCell.row;
                 int neighbourCol = currentCell.col;
                 bool validNeighbour = false;
 
                 switch (p){
-                    case Grid::Position::LEFT:
+                    case Maze::Direction::LEFT:
                         neighbourCol--;
                         if(!maze.grid[currentCell.row][currentCell.col].leftWall && !maze.grid[neighbourRow][neighbourCol].rightWall){
                             validNeighbour = true;
                         }
                     break;
                         
-                    case Grid::Position::UP:
+                    case Maze::Direction::UP:
                         neighbourRow--;
                         if(!maze.grid[currentCell.row][currentCell.col].topWall && !maze.grid[neighbourRow][neighbourCol].bottomWall){
                             validNeighbour = true;
                         }
                     break;
 
-                    case Grid::Position::RIGHT:
+                    case Maze::Direction::RIGHT:
                         neighbourCol++;
                         if(!maze.grid[currentCell.row][currentCell.col].rightWall && !maze.grid[neighbourRow][neighbourCol].leftWall){
                             validNeighbour = true;
                         }
                     break;
                     
-                    case Grid::Position::DOWN:
+                    case Maze::Direction::DOWN:
                         neighbourRow++;
                         if(!maze.grid[currentCell.row][currentCell.col].bottomWall && !maze.grid[neighbourRow][neighbourCol].topWall){
                             validNeighbour = true;
@@ -146,31 +146,31 @@ void DeadEndFiller::Solve(Grid &maze) {
     }else{
         //Trace path after filling
         if(currentCell!=exitCell){
-            Grid::CellPosition neighbourCell = currentCell;
+            Maze::CellPosition neighbourCell = currentCell;
             //where can i go?
-            vector<Grid::Position> v = maze.UnvisitedNeighbours(currentCell);
+            vector<Maze::Direction> v = maze.UnvisitedNeighbours(currentCell);
             while(neighbourCell==currentCell){
 
                 switch (v.back()){
-                    case Grid::Position::LEFT:
+                    case Maze::Direction::LEFT:
                         if(!maze.grid[currentCell.row][currentCell.col].leftWall){
                             neighbourCell.col--;
                         }
                     break;
                         
-                    case Grid::Position::UP:
+                    case Maze::Direction::UP:
                         if(!maze.grid[currentCell.row][currentCell.col].topWall){
                             neighbourCell.row--;
                         }
                     break;
     
-                    case Grid::Position::RIGHT:
+                    case Maze::Direction::RIGHT:
                         if(!maze.grid[currentCell.row][currentCell.col].rightWall){
                             neighbourCell.col++;
                         }
                     break;
                     
-                    case Grid::Position::DOWN:
+                    case Maze::Direction::DOWN:
                         if(!maze.grid[currentCell.row][currentCell.col].bottomWall){
                             neighbourCell.row++;
                         }

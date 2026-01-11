@@ -1,8 +1,8 @@
 #include "HuntnKill.h"
 
-void HuntnKill::Hunt(Grid &maze) {
+void HuntnKill::Hunt(Maze &maze) {
 
-    vector<Grid::Position> v;
+    vector<Maze::Direction> v;
     
     maze.HighlightRow(highlightIterationRow, {27, 227, 84, 255});
 
@@ -55,25 +55,25 @@ void HuntnKill::Hunt(Grid &maze) {
         int neighbourCol = currentCol;
 
         switch (v[0]){
-            case Grid::Position::LEFT:
+            case Maze::Direction::LEFT:
                 neighbourCol--;
                 maze.grid[currentRow][currentCol].leftWall = false;
                 maze.grid[neighbourRow][neighbourCol].rightWall = false;
             break;
 
-            case Grid::Position::UP:
+            case Maze::Direction::UP:
                 neighbourRow--;
                 maze.grid[currentRow][currentCol].topWall = false;
                 maze.grid[neighbourRow][neighbourCol].bottomWall = false;
             break;
 
-            case Grid::Position::RIGHT:
+            case Maze::Direction::RIGHT:
                 neighbourCol++;
                 maze.grid[currentRow][currentCol].rightWall = false;
                 maze.grid[neighbourRow][neighbourCol].leftWall = false;
             break;
 
-            case Grid::Position::DOWN:
+            case Maze::Direction::DOWN:
                 neighbourRow++;
                 maze.grid[currentRow][currentCol].bottomWall = false;
                 maze.grid[neighbourRow][neighbourCol].topWall = false;
@@ -88,7 +88,7 @@ void HuntnKill::Hunt(Grid &maze) {
 }
 
 
-void HuntnKill::Init(int startRow, int startCol, Grid &maze) {
+void HuntnKill::Init(int startRow, int startCol, Maze &maze) {
     currentRow = startRow;
     currentCol = startCol;
 
@@ -100,12 +100,12 @@ void HuntnKill::Init(int startRow, int startCol, Grid &maze) {
     pLastCell = nullptr;
 }
 
-void HuntnKill::Generate(Grid &maze) {
+void HuntnKill::Generate(Maze &maze) {
     if(maze.UnvisitedCount()>0){    //repeat until
     
-        Grid::Position neighbourPos;
+        Maze::Direction neighbourPos;
     
-        vector<Grid::Position> v = maze.UnvisitedNeighbours(currentRow, currentCol);
+        vector<Maze::Direction> v = maze.UnvisitedNeighbours(currentRow, currentCol);
         if(!v.empty()){
             //Perform a random walk:
             int neighbourRow = currentRow;
@@ -115,24 +115,24 @@ void HuntnKill::Generate(Grid &maze) {
             int random = GetRandomValue(0, (int)v.size()-1);
     
             switch (v[random]){
-                case Grid::Position::LEFT:     //left
+                case Maze::Direction::LEFT:     //left
                     neighbourCol--;
-                    neighbourPos = Grid::Position::LEFT;
+                    neighbourPos = Maze::Direction::LEFT;
                 break;
     
-                case Grid::Position::UP:       //Up
+                case Maze::Direction::UP:       //Up
                     neighbourRow--;
-                    neighbourPos = Grid::Position::UP;
+                    neighbourPos = Maze::Direction::UP;
                 break;
     
-                case Grid::Position::RIGHT:    //Right
+                case Maze::Direction::RIGHT:    //Right
                     neighbourCol++;
-                    neighbourPos = Grid::Position::RIGHT;
+                    neighbourPos = Maze::Direction::RIGHT;
                 break;
     
-                case Grid::Position::DOWN:     //Down
+                case Maze::Direction::DOWN:     //Down
                     neighbourRow++;
-                    neighbourPos = Grid::Position::DOWN;
+                    neighbourPos = Maze::Direction::DOWN;
                 break;
             }
             v.erase(v.begin() + random);
@@ -140,22 +140,22 @@ void HuntnKill::Generate(Grid &maze) {
             //  Remove the wall between the current cell and the chosen cell
             if(!maze.grid[neighbourRow][neighbourCol].visited){
                 switch (neighbourPos){
-                    case Grid::Position::LEFT:
+                    case Maze::Direction::LEFT:
                         maze.grid[currentRow][currentCol].leftWall = false;
                         maze.grid[neighbourRow][neighbourCol].rightWall = false;
                     break;
     
-                    case Grid::Position::UP:
+                    case Maze::Direction::UP:
                         maze.grid[currentRow][currentCol].topWall = false;
                         maze.grid[neighbourRow][neighbourCol].bottomWall = false;
                     break;
     
-                    case Grid::Position::RIGHT:
+                    case Maze::Direction::RIGHT:
                         maze.grid[currentRow][currentCol].rightWall = false;
                         maze.grid[neighbourRow][neighbourCol].leftWall = false;
                     break;
     
-                    case Grid::Position::DOWN:
+                    case Maze::Direction::DOWN:
                         maze.grid[currentRow][currentCol].bottomWall = false;
                         maze.grid[neighbourRow][neighbourCol].topWall = false;
                     break;

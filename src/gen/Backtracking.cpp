@@ -1,6 +1,6 @@
 #include "Backtracking.h"
 
-void Backtracking::Init(int startingRow, int startingCol, Grid& maze) {
+void Backtracking::Init(int startingRow, int startingCol, Maze& maze) {
     cellStack.clear();
     //Choose the initial cell, mark it as visited and push it to the stack
     maze.grid[startingRow][startingCol].visited = true;
@@ -8,7 +8,7 @@ void Backtracking::Init(int startingRow, int startingCol, Grid& maze) {
     cellStack.push_back({startingRow, startingCol});
 }
 
-void Backtracking::Generate(Grid &maze) {
+void Backtracking::Generate(Maze &maze) {
     if(!cellStack.empty()){    //repeat until
         ////While the stack is not empty (recursive)
         //one iteration:
@@ -17,10 +17,10 @@ void Backtracking::Generate(Grid &maze) {
         cellStack.pop_back();
     
     
-        Grid::Position neighbourPos;
+        Maze::Direction neighbourPos;
     
         //If the current cell has any neighbours which have not been visited
-        vector<Grid::Position> v = maze.UnvisitedNeighbours(currentRow, currentCol);
+        vector<Maze::Direction> v = maze.UnvisitedNeighbours(currentRow, currentCol);
         if(!v.empty()){
     
             //Push the current cell to the stack
@@ -33,24 +33,24 @@ void Backtracking::Generate(Grid &maze) {
             int random = GetRandomValue(0, (int)v.size()-1);
     
             switch (v[random]){
-                case Grid::Position::LEFT:     //left
+                case Maze::Direction::LEFT:     //left
                     neighbourCol--;
-                    neighbourPos = Grid::Position::LEFT;
+                    neighbourPos = Maze::Direction::LEFT;
                 break;
     
-                case Grid::Position::UP:       //Up
+                case Maze::Direction::UP:       //Up
                     neighbourRow--;
-                    neighbourPos = Grid::Position::UP;
+                    neighbourPos = Maze::Direction::UP;
                 break;
     
-                case Grid::Position::RIGHT:    //Right
+                case Maze::Direction::RIGHT:    //Right
                     neighbourCol++;
-                    neighbourPos = Grid::Position::RIGHT;
+                    neighbourPos = Maze::Direction::RIGHT;
                 break;
     
-                case Grid::Position::DOWN:     //Down
+                case Maze::Direction::DOWN:     //Down
                     neighbourRow++;
-                    neighbourPos = Grid::Position::DOWN;
+                    neighbourPos = Maze::Direction::DOWN;
                 break;
             }
             v.erase(v.begin() + random);
@@ -58,22 +58,22 @@ void Backtracking::Generate(Grid &maze) {
             //Remove the wall between the current cell and the chosen cell
             if(!maze.grid[neighbourRow][neighbourCol].visited){
                 switch (neighbourPos){
-                    case Grid::Position::LEFT:
+                    case Maze::Direction::LEFT:
                         maze.grid[currentRow][currentCol].leftWall = false;
                         maze.grid[neighbourRow][neighbourCol].rightWall = false;
                     break;
     
-                    case Grid::Position::UP:
+                    case Maze::Direction::UP:
                         maze.grid[currentRow][currentCol].topWall = false;
                         maze.grid[neighbourRow][neighbourCol].bottomWall = false;
                     break;
     
-                    case Grid::Position::RIGHT:
+                    case Maze::Direction::RIGHT:
                         maze.grid[currentRow][currentCol].rightWall = false;
                         maze.grid[neighbourRow][neighbourCol].leftWall = false;
                     break;
     
-                    case Grid::Position::DOWN:
+                    case Maze::Direction::DOWN:
                         maze.grid[currentRow][currentCol].bottomWall = false;
                         maze.grid[neighbourRow][neighbourCol].topWall = false;
                     break;

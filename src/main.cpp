@@ -11,6 +11,7 @@
 #include "./solve/DepthFirstSearch.h"
 #include "./solve/BreadthFirstSearch.h"
 #include "./solve/DeadEndFiller.h"
+#include "./solve/AStar.h"
 
 
 int main() {
@@ -33,7 +34,7 @@ int main() {
 
 
 
-    Grid grid;
+    Maze maze;
     Gui gui;
 
     Image icon = LoadImage("./icon/icon.png");
@@ -51,7 +52,7 @@ int main() {
     bool algType;       // true -> Gen  |  false -> solve
 
     gui.Init();
-    grid.Create(gridHeight, gridWidth);
+    maze.CreateEmpty(gridHeight, gridWidth);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -65,26 +66,26 @@ int main() {
 
             switch(gui.choosenAlgorithm){
                 case (Gui::Algorithm::Backtracking): //DFS (gen)
-                    grid.Create(gridHeight, gridWidth);
-                    Backtracking::Init(startingRow, startingCol, grid);
+                    maze.CreateEmpty(gridHeight, gridWidth);
+                    Backtracking::Init(startingRow, startingCol, maze);
                     algType = true;
                 break;
                 
                 case (Gui::Algorithm::HuntNKill):
-                    grid.Create(gridHeight, gridWidth);
-                    HuntnKill::Init(startingRow, startingCol, grid);
+                    maze.CreateEmpty(gridHeight, gridWidth);
+                    HuntnKill::Init(startingRow, startingCol, maze);
                     algType = true;
                 break;
                 
                 case (Gui::Algorithm::Prim):
-                    grid.Create(gridHeight, gridWidth);
-                    Prim::Init(startingRow, startingCol, grid);
+                    maze.CreateEmpty(gridHeight, gridWidth);
+                    Prim::Init(startingRow, startingCol, maze);
                     algType = true;
                 break;
                 
                 case (Gui::Algorithm::Kruskal): //Randomized* Kruskal
-                    grid.Create(gridHeight, gridWidth);
-                    Kruskal::Init(grid);
+                    maze.CreateEmpty(gridHeight, gridWidth);
+                    Kruskal::Init(maze);
                     gui.genIterations--;
                     algType = true;
                 break;
@@ -95,26 +96,27 @@ int main() {
 
 
                 case (Gui::Algorithm::WallFollower):
-                    WallFollower::Init(startingRow, startingCol, grid);
+                    WallFollower::Init(startingRow, startingCol, maze);
                     algType = false;
                 break;
                 
                 case (Gui::Algorithm::DepthFirstSearch):
-                    DepthFirstSearch::Init(startingRow, startingCol, exitRow, exitCol, grid);
+                    DepthFirstSearch::Init(startingRow, startingCol, exitRow, exitCol, maze);
                     algType = false;
                 break;
 
                 case (Gui::Algorithm::BreadthFirstSearch):
-                    BreadthFirstSearch::Init(startingRow, startingCol, exitRow, exitCol, grid);
+                    BreadthFirstSearch::Init(startingRow, startingCol, exitRow, exitCol, maze);
                     algType = false;
                 break;
                 
                 case (Gui::Algorithm::DeadEndFiller):
-                    DeadEndFiller::Init(startingRow, startingCol, exitRow, exitCol, grid);
+                    DeadEndFiller::Init(startingRow, startingCol, exitRow, exitCol, maze);
                     algType = false;
                 break;
                 
                 case (Gui::Algorithm::AStar):
+                    AStar::Init(startingRow, startingCol, exitRow, exitCol, maze);
                     algType = false;
                 break;
 
@@ -132,7 +134,7 @@ int main() {
                     genTime = GetTime();
 
                 }else{              //SOLVING
-                    grid.ClearSolution();
+                    maze.ClearSolution();
 
                     gui.solveIterations = 0;
                     gui.solveIterations++;
@@ -148,32 +150,32 @@ int main() {
             switch (gui.choosenAlgorithm){
                 case (Gui::Algorithm::Backtracking):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.generated){
-                            Backtracking::Generate(grid);
+                        if(!maze.generated){
+                            Backtracking::Generate(maze);
                         }
                     }
                 break;
                 
                 case (Gui::Algorithm::HuntNKill):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.generated){
-                            HuntnKill::Generate(grid);
+                        if(!maze.generated){
+                            HuntnKill::Generate(maze);
                         }
                     }
                 break;
                
                 case (Gui::Algorithm::Prim):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.generated){
-                            Prim::Generate(grid);
+                        if(!maze.generated){
+                            Prim::Generate(maze);
                         }
                     }
                 break;
                 
                 case (Gui::Algorithm::Kruskal):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.generated){
-                            Kruskal::Generate(grid);
+                        if(!maze.generated){
+                            Kruskal::Generate(maze);
                         }
                     }
                 break;
@@ -185,52 +187,56 @@ int main() {
 
                 case (Gui::Algorithm::WallFollower):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.Solved){
-                            WallFollower::Solve(grid);
+                        if(!maze.Solved){
+                            WallFollower::Solve(maze);
                         }
                     }
                 break;
                     
                 case (Gui::Algorithm::DepthFirstSearch):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.Solved){
-                            DepthFirstSearch::Solve(grid);
+                        if(!maze.Solved){
+                            DepthFirstSearch::Solve(maze);
                         }
                     }
                 break;
                     
                 case (Gui::Algorithm::BreadthFirstSearch):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.Solved){
-                            BreadthFirstSearch::Solve(grid);
+                        if(!maze.Solved){
+                            BreadthFirstSearch::Solve(maze);
                         }
                     }
                 break;
                 
                 case (Gui::Algorithm::DeadEndFiller):
                     if(GetTime()-delay > vSpeed){
-                        if(!grid.Solved){
-                            DeadEndFiller::Solve(grid);
+                        if(!maze.Solved){
+                            DeadEndFiller::Solve(maze);
                         }
                     }
                 break;
                 
                 case (Gui::Algorithm::AStar):  
-                    grid.Solved = true;
+                    if(GetTime()-delay > vSpeed){
+                        if(!maze.Solved){
+                            AStar::Solve(maze);
+                        }
+                    }
                 break;
 
                 case (Gui::Algorithm::Tremaux):
-                    grid.Solved = true;
+                    maze.Solved = true;
                 break;
             }
             
 
-            gui.solveReady = grid.generated;
+            gui.solveReady = maze.generated;
             
             //if        generated          or            solved
-            if((grid.generated && algType) || (grid.Solved && !algType)){
+            if((maze.generated && algType) || (maze.Solved && !algType)){
                 if(GetTime()-delay > 1){
-                    grid.ChangeEveryCellColor(WHITE);
+                    maze.ChangeEveryCellColor(WHITE);
                     gui.choosenAlgorithm = Gui::Algorithm::None;
                     gui.ready = true;
                 }
@@ -252,7 +258,7 @@ int main() {
         }
 
         
-        grid.Display();
+        maze.Display();
         
         // DrawText("Prosze polaczycv sie z nigga AI", screenWidth/3+10, 13, 20, GREEN); //! zapytanie o polaczenie z nigga ai
         EndDrawing();

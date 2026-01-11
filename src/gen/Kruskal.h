@@ -1,12 +1,12 @@
 #pragma once
-#include "../Grid.h"
+#include "../Maze.h"
 
 class Kruskal {
     private:
         
     public:
-        inline static vector<Grid::Edge> edgeList;
+        inline static vector<Maze::Edge> edgeList;
 
-        static void Init(Grid& maze);
-        static void Generate(Grid& maze);
+        static void Init(Maze& maze);
+        static void Generate(Maze& maze);
 };

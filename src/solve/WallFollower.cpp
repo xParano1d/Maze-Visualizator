@@ -1,6 +1,6 @@
 #include "WallFollower.h"
 
-void WallFollower::Init(int startingRow, int startingCol, Grid &maze) {
+void WallFollower::Init(int startingRow, int startingCol, Maze &maze) {
     
     currentRow = startingRow;
     currentCol = startingCol;
@@ -9,11 +9,11 @@ void WallFollower::Init(int startingRow, int startingCol, Grid &maze) {
     previousCol = startingCol;
     
     maze.grid[startingRow][startingCol].color = {108, 117, 148, 255};
-    currentDirection = Grid::Position::DOWN;
+    currentDirection = Maze::Direction::DOWN;
 
 }
 
-void WallFollower::Solve(Grid &maze) {
+void WallFollower::Solve(Maze &maze) {
     bool right = false;
     bool front = false;
 
@@ -23,7 +23,7 @@ void WallFollower::Solve(Grid &maze) {
     }else if(!maze.Solved){
         
         switch (currentDirection){
-            case (Grid::Position::LEFT):
+            case (Maze::Direction::LEFT):
                 if(maze.grid[currentRow][currentCol].topWall){  //? is there wall on right?
                     right = true;
                 }
@@ -32,7 +32,7 @@ void WallFollower::Solve(Grid &maze) {
                 }
             break;
             
-            case (Grid::Position::UP):
+            case (Maze::Direction::UP):
                 if(maze.grid[currentRow][currentCol].rightWall){
                     right = true;
                 }
@@ -41,7 +41,7 @@ void WallFollower::Solve(Grid &maze) {
                 }
             break;
             
-            case (Grid::Position::RIGHT):
+            case (Maze::Direction::RIGHT):
                 if(maze.grid[currentRow][currentCol].bottomWall){
                     right = true;
                 }
@@ -50,7 +50,7 @@ void WallFollower::Solve(Grid &maze) {
                 }
             break;
             
-            case (Grid::Position::DOWN):
+            case (Maze::Direction::DOWN):
                 if(maze.grid[currentRow][currentCol].leftWall){
                     right = true;
                 }
@@ -69,20 +69,20 @@ void WallFollower::Solve(Grid &maze) {
             if(front){
                 // Turn 90° to the Left. Do not move yet.
                 switch (currentDirection){
-                    case (Grid::Position::LEFT):
-                    currentDirection = Grid::Position::DOWN;
+                    case (Maze::Direction::LEFT):
+                    currentDirection = Maze::Direction::DOWN;
                     break;
                 
-                    case (Grid::Position::UP):
-                        currentDirection = Grid::Position::LEFT;
+                    case (Maze::Direction::UP):
+                        currentDirection = Maze::Direction::LEFT;
                     break;
                 
-                    case (Grid::Position::RIGHT):
-                        currentDirection = Grid::Position::UP;
+                    case (Maze::Direction::RIGHT):
+                        currentDirection = Maze::Direction::UP;
                     break;
                 
-                    case (Grid::Position::DOWN):
-                        currentDirection = Grid::Position::RIGHT;
+                    case (Maze::Direction::DOWN):
+                        currentDirection = Maze::Direction::RIGHT;
                     break;
                 
                     default:
@@ -92,19 +92,19 @@ void WallFollower::Solve(Grid &maze) {
             }else{
                 //Do not turn. Move forward one step.
                 switch (currentDirection){
-                    case (Grid::Position::LEFT):
+                    case (Maze::Direction::LEFT):
                         currentCol--;
                     break;
                 
-                    case (Grid::Position::UP):
+                    case (Maze::Direction::UP):
                         currentRow--;
                     break;
                     
-                    case (Grid::Position::RIGHT):
+                    case (Maze::Direction::RIGHT):
                         currentCol++;
                     break;
                     
-                    case (Grid::Position::DOWN):
+                    case (Maze::Direction::DOWN):
                         currentRow++;
                     break;
                     
@@ -116,23 +116,23 @@ void WallFollower::Solve(Grid &maze) {
         }else{
             //Turn 90° to the Right and move forward one step.
             switch (currentDirection){
-                case (Grid::Position::LEFT):
-                    currentDirection = Grid::Position::UP;
+                case (Maze::Direction::LEFT):
+                    currentDirection = Maze::Direction::UP;
                     currentRow--;
                 break;
                     
-                case (Grid::Position::UP):
-                    currentDirection = Grid::Position::RIGHT;
+                case (Maze::Direction::UP):
+                    currentDirection = Maze::Direction::RIGHT;
                     currentCol++;
                 break;
                     
-                case (Grid::Position::RIGHT):
-                    currentDirection = Grid::Position::DOWN;
+                case (Maze::Direction::RIGHT):
+                    currentDirection = Maze::Direction::DOWN;
                     currentRow++;
                 break;
             
-                case (Grid::Position::DOWN):
-                    currentDirection = Grid::Position::LEFT;
+                case (Maze::Direction::DOWN):
+                    currentDirection = Maze::Direction::LEFT;
                     currentCol--;
                 break;
                     

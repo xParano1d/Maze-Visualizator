@@ -1,16 +1,16 @@
 #pragma once
-#include "../Grid.h"
+#include "../Maze.h"
 
 class DepthFirstSearch {
     private:
-        inline static vector<Grid::CellPosition> cellStack;
-        inline static vector<vector<Grid::CellPosition>> parentMap;
+        inline static vector<Maze::CellPosition> cellStack;
+        inline static vector<vector<Maze::CellPosition>> parentMap;
 
-        inline static Grid::CellPosition exit;
+        inline static Maze::CellPosition exit;
 
         inline static bool PathFound;
-        inline static Grid::CellPosition cursor;
+        inline static Maze::CellPosition cursor;
     public:
-        static void Init(int startingRow, int startingCol, int exitRow, int exitCol, Grid& maze);
-        static void Solve(Grid &maze);
+        static void Init(int startingRow, int startingCol, int exitRow, int exitCol, Maze& maze);
+        static void Solve(Maze &maze);
 };

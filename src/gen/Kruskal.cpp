@@ -2,19 +2,19 @@
 #include <iostream>
 using namespace std;
 
-void Kruskal::Init(Grid &maze) {
+void Kruskal::Init(Maze &maze) {
     //Throw all of the Edges into set
     int h = 0;
     for (int i = 0; i < (int)maze.grid.size(); i++){        
         for (int j = 0; j < (int)maze.grid[i].size(); j++){
 
             if(j >= 0 && j < (int)maze.grid[i].size()-1){     //Right Edge
-                edgeList.push_back({{i, j}, {i, j+1}, Grid::Position::RIGHT});
+                edgeList.push_back({{i, j}, {i, j+1}, Maze::Direction::RIGHT});
 
             }
 
             if(i >= 0 && i < (int)maze.grid.size()-1){        //Bottom Edge
-                edgeList.push_back({{i, j}, {i+1, j},Grid::Position::DOWN});
+                edgeList.push_back({{i, j}, {i+1, j},Maze::Direction::DOWN});
 
             }
 
@@ -24,10 +24,10 @@ void Kruskal::Init(Grid &maze) {
     }
 }
 
-void Kruskal::Generate(Grid &maze) {
+void Kruskal::Generate(Maze &maze) {
     
     int rowA, colA, rowB, colB, idA, idB;
-    Grid::Edge currentEdge;
+    Maze::Edge currentEdge;
     
     bool correctChosen = false;
     while(!correctChosen){  //! looping until we find a good pair to connect
@@ -63,18 +63,18 @@ void Kruskal::Generate(Grid &maze) {
 
         //Remove walls between Cells
         switch (currentEdge.direction){
-            case Grid::Position::LEFT:
+            case Maze::Direction::LEFT:
             break;
 
-            case Grid::Position::UP:
+            case Maze::Direction::UP:
             break;
 
-            case Grid::Position::RIGHT:
+            case Maze::Direction::RIGHT:
                 maze.grid[rowA][colA].rightWall = false;
                 maze.grid[rowB][colB].leftWall = false;
             break;
 
-            case Grid::Position::DOWN:
+            case Maze::Direction::DOWN:
                 maze.grid[rowA][colA].bottomWall = false;
                 maze.grid[rowB][colB].topWall = false;
             break;

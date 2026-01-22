@@ -25,7 +25,7 @@ void Maze::CreateEmpty(int rows, int columns) {
     this->grid[0][0].topWall = false;
     this->grid[rows-1][columns-1].bottomWall = false;
 
-    generated = false;
+    Generated = false;
 
     Solved = false;
     ClearSolution();
@@ -50,6 +50,17 @@ void Maze::HighlightRow(int row, Color c) {
     
     highlightColor = c;
     highlightColor.a = 90;
+}
+
+void Maze::ResetGroupsID() {
+    int x = 1;
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++){
+            grid[i][j].groupID = x;
+            x++;
+        }
+    }
+            
 }
 
 void Maze::ChangeGroupsID(int fromID, int toID) {
@@ -312,6 +323,16 @@ int Maze::UnvisitedCount() {
             if(!grid[i][j].visited){
                 c++;
             }
+        }
+    }
+    return c;
+}
+
+int Maze::UnvisitedCount(int row) {
+    int c=0;
+    for (int j = 0; j < columns; j++){
+        if(!grid[row][j].visited){
+            c++;
         }
     }
     return c;

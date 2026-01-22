@@ -78,6 +78,6 @@ void Prim::Generate(Maze &maze) {
     
         HighlightFrontier(maze);
     }else{
-        maze.generated = true;
+        maze.Generated = true;
     }
 }

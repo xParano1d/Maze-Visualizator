@@ -174,6 +174,6 @@ void HuntnKill::Generate(Maze &maze) {
             Hunt(maze);
         }
     }else{
-        maze.generated = true;
+        maze.Generated = true;
     }
 }

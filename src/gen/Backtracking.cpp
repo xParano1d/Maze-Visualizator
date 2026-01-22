@@ -89,6 +89,6 @@ void Backtracking::Generate(Maze &maze) {
             maze.grid[currentRow][currentCol].color  = {27, 227, 84, 255};
         }
     }else{
-        maze.generated = true;
+        maze.Generated = true;
     }
 }

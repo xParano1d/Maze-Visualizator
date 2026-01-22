@@ -8,7 +8,8 @@ class Maze {
     public:
         int rows;
         int columns;
-        bool generated;
+        bool Generated;
+        bool Solved;
 
         struct CellPosition {
             int row;
@@ -20,6 +21,7 @@ class Maze {
             bool operator!=(const CellPosition& other) const{
                 return !(*this==other); //using == and negating 
             }
+
         };
 
         struct Section{
@@ -28,7 +30,6 @@ class Maze {
         };
         vector<Section> solvePath;
         vector<Section> deadEndPath;
-        bool Solved;
         void ClearSolution();
 
         enum Direction {
@@ -73,9 +74,9 @@ class Maze {
         
         void ChangeEveryCellColor(Color c);
         void HighlightRow(int row, Color c);
-        
+
+        void ResetGroupsID();
         void ChangeGroupsID(int fromID, int toID);
-        void ChangeCellColorWithID(int id, Color color);
         void UnvisitEveryCell();
         
         vector<CellPosition> GetUnvisitedNeighboursPosition(int cellRow, int cellCol);
@@ -89,7 +90,7 @@ class Maze {
         vector<Direction> VisitedNeighbours(CellPosition cell);
 
         int UnvisitedCount();
-
+        int UnvisitedCount(int row);
 
         bool highlightRowEnabled = false;
     private:

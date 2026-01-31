@@ -5,7 +5,8 @@ TODO:
 
     Things to implement:
         ✔ step by step algorithms displaying @done (12/9/2025, 10:38:31 PM)
-        ☐ Gui Settings (window size, grid size, speed, etc.)
+        ✔ Gui Settings (window size, maximize, grid size, speed, etc.) @done (1/31/2026, 4:34:53 AM)
+        ☐ Gui Slider for Settings
         ✔ Gui Gen time @done (11/11/2025, 7:22:08 PM)
         ✔ Gui Gen iterations @done (11/11/2025, 7:22:12 PM)
         ✔ Gui Solve time @done (12/14/2025, 8:02:50 PM)
@@ -22,6 +23,7 @@ TODO:
             ✔ Kruskal @done (12/14/2025, 12:22:27 AM)
             ✔ Eller? @done (1/22/2026, 6:46:31 PM)
             ☐ Sidewinder
+            ☐ Random Grid
 
         Solve:
             ✔ Wall Follower @done (12/27/2025, 7:27:26 PM)
@@ -35,12 +37,8 @@ TODO:
 
 
     Issues to fix:
-        ☐ cell walls scaling and overall graphics improvement needed
+        ✔ cell walls scaling and overall graphics improvement needed @done (1/31/2026, 4:35:10 AM)
         ☐ *?* add cursor color blue to backtracking (maybe)
         ✔ Hunt n' Kill highlighting row one time per iteration @done (12/29/2025, 3:42:55 PM)
         ✔ IsHovered() for selected button should have the same color @done (12/15/2025, 1:26:30 AM)
-        ☐ fix solvePath thickness
-
-
-
-
+        ✔ fix solvePath thickness @done (1/27/2026, 3:30:42 PM)

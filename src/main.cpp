@@ -15,7 +15,6 @@
 #include "./solve/AStar.h"
 
 
-
 int main() {
     SetConfigFlags(FLAG_WINDOW_HIDDEN);
     InitWindow(800, 600, "Labyrinths Visualization");
@@ -30,15 +29,13 @@ int main() {
     
     //*---SETTINGS---*
     //*Screen:
-    int screenWidth = GetMonitorWidth(currentMonitor);
-   // / 1.6;
-    int screenHeight = GetMonitorHeight(currentMonitor);
-   // / 1.6;
+    int screenWidth = GetMonitorWidth(currentMonitor) / 1.6;
+    int screenHeight = GetMonitorHeight(currentMonitor) / 1.6;
 
     //*Maze:
     //Grid Size:
-    int gridWidth = 100;     // rows
-    int gridHeight = 100;    // columns
+    int gridWidth = 10;     // rows
+    int gridHeight = 10;    // columns
 
     //Starting Position for Solving
     int startingRow = 0;
@@ -49,41 +46,56 @@ int main() {
     int exitCol = gridWidth-1;
     
     //*Visualization:
-    float vSpeed = 100;  //Speed 
-    vSpeed = 1 / vSpeed;    //heighest value -> faster
+    //Speed (in algorithm steps per second)
+    float vSpeed = 6;  //(1-10) | higher value -> faster
 
+    
     SetWindowSize(screenWidth, screenHeight);
     SetWindowPosition((GetMonitorWidth(currentMonitor) - screenWidth) / 2, (GetMonitorHeight(currentMonitor) - screenHeight) / 2);
     ClearWindowState(FLAG_WINDOW_HIDDEN);
 
-    Gui gui(gridHeight, gridWidth);
+    Gui gui(gridHeight, gridWidth, vSpeed);
     Maze maze;
 
-    double delay;
+    double time;
+    double dt;  //delta time
+    double stepDelay;
+
     double genTime;
     double solveTime;
     bool algType;       // true -> Gen  |  false -> solve
 
     int tempW = 0;
     int tempH = 0;
+    float tempVSpeed = 0;
 
     while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(BLACK);
-
+        dt = GetFrameTime();
+        if (dt > 0.1f){
+            dt = 0.1f; 
+        }
+        
         if(tempH!=gridHeight || tempW!=gridWidth){
             tempW = gridWidth;
             tempH = gridHeight;
             
             exitRow = gridHeight-1;
             exitCol = gridWidth-1;
-
-            maze.CreateEmpty(gridHeight, gridWidth);
-            gui.solveReady = false;
-        }
-
-        if(gui.ready){
             
+            maze.CreateEmpty(gridHeight, gridWidth);
+            gui.ReadytoSolve = false;
+            tempVSpeed = 0;
+        }
+        if(tempVSpeed!=vSpeed){
+            float targetDuration = 60 * pow(0.5, vSpeed - 1);   //The "Halving" Formula
+            stepDelay = targetDuration / (gridWidth*gridHeight);//Grid Size should be considered too
+            tempVSpeed = vSpeed;
+        }
+        
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        if(gui.ButtonsReadyToClick){
             gui.choosenAlgorithm = gui.MainButtonHandler();
             
             switch(gui.choosenAlgorithm){
@@ -154,7 +166,7 @@ int main() {
                 break;
             }
             
-            if(!gui.ready){
+            if(!gui.ButtonsReadyToClick){
                 if(algType){        //GENERATION
                     gui.genIterations = 0;
                     gui.genIterations++;
@@ -171,12 +183,22 @@ int main() {
                     gui.solveTime = 0;
                     solveTime = GetTime();
                 }
-                delay = GetTime();
             }
             
         }else{
-            
-            if(GetTime()-delay > vSpeed){
+            if(gui.choosenAlgorithm != Gui::Algorithm::None){
+                if(algType){
+                    gui.genTime = GetTime()-genTime;
+                }else{
+                    gui.solveTime = GetTime()-solveTime;
+                }
+            }else{
+                maze.highlightRowEnabled = false;
+            }
+
+            time += dt;
+            while(time >= stepDelay){
+                time -= stepDelay;
                 switch (gui.choosenAlgorithm){
                     case (Gui::Algorithm::Backtracking):
                     Backtracking::Generate(maze);
@@ -228,29 +250,25 @@ int main() {
                     break;
                 }
                 
-                gui.solveReady = maze.Generated;
-                
                 //if        generated          or            solved
                 if((maze.Generated && algType) || (maze.Solved && !algType)){
-                    if(GetTime()-delay > 1){
+                    gui.ReadytoSolve = maze.Generated;
+                    gui.choosenAlgorithm = Gui::Algorithm::None;
+
+                    if((GetTime()-genTime>1 && algType)||(GetTime()-solveTime>1 && !algType)){
                         maze.ChangeEveryCellColor(WHITE);
-                        gui.choosenAlgorithm = Gui::Algorithm::None;
-                        gui.ready = true;
+                        gui.ButtonsReadyToClick = true;
+
+                        time = 0;
+                        break;
                     }
-                }else{
-                    
-                    if(GetTime()-delay > vSpeed){
-                        delay = GetTime();
-                        if(algType){
-                            gui.genIterations++;
-                        }else{
-                            gui.solveIterations++;
-                        }
-                    }
+                }else if(gui.choosenAlgorithm != Gui::Algorithm::None){
                     if(algType){
-                        gui.genTime = GetTime() - genTime;
+                        gui.genIterations++;
+                        gui.genTime = GetTime()-genTime;
                     }else{
-                        gui.solveTime = GetTime() - solveTime;
+                        gui.solveIterations++;
+                        gui.solveTime = GetTime()-solveTime;
                     }
                 }
             }

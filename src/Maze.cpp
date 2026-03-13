@@ -128,7 +128,7 @@ void Maze::Display(CellPosition startPosition, CellPosition exitPosition) {
     float posY = centerY - height/2;
 
 
-    float wallThickness = fmax(3.0f, fmin(cellSize * 0.1f, 6.0f));
+    float wallThickness = fmax(3.0f, fmin(cellSize * 0.2f, 6.0f));
     float borderThickness = wallThickness+3*aspectRatio;
 
     //? Background of a Grid

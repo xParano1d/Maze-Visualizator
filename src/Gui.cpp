@@ -36,7 +36,6 @@ void Gui::UpdateData() {
 void Gui::UpdateContexts() {
     UpdateData();
 
-    //*Left Box*
     ChangeRectPosition(LEFT, offsetX, offsetY);
     ResizeRect(LEFT, smallBoxWidth, boxHeight);
 
@@ -452,13 +451,16 @@ void Gui::DisplaySettingsWindow() {
 
     }else if(!correctInputs){                                   //locked
         SaveSettings.ChangeColor({143, 17, 28, 255}, BLACK);
+        //tooltip
+        DrawText("ERROR: INVALID INPUT WILL NOT BE SAVED!", GetRectPosX(CENTER) + (GetRectArea(CENTER).x - MeasureText("ERROR: INVALID INPUT WILL NOT BE SAVED!", fontSize*0.6f))/2, GetRectPosY(CENTER)+GetRectArea(CENTER).y-offsetY*7, fontSize*0.6f, {143, 17, 28, 255});
 
     }else{                                                       //base color
         SaveSettings.ChangeColor({27, 227, 84, 255}, WHITE);
     }
     SaveSettings.Display();
 
-    if(SaveSettings.IsClicked() && correctInputs){
+    //exiting settings
+    if((SaveSettings.IsClicked() || IsKeyPressed(KEY_ESCAPE)) && correctInputs){
         SettingsVisible = false;
         
         //get values and change settings 
@@ -469,5 +471,8 @@ void Gui::DisplaySettingsWindow() {
         mazeExitCol = exitColInput.value-1;
 
         visualizationSpeed = vSpeedInput.value;
+
+    }else if(IsKeyPressed(KEY_ESCAPE)){
+        SettingsVisible = false;
     }
 }

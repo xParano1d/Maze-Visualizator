@@ -34,7 +34,7 @@ int main() {
     UnloadImage(icon);
     UnloadImage(icon16);
     UnloadImage(icon32);
-
+    SetExitKey(KEY_F4);
 
     int currentMonitor = GetCurrentMonitor();
     SetTargetFPS(GetMonitorRefreshRate(currentMonitor));

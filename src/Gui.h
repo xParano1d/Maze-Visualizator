@@ -47,7 +47,7 @@ class Gui {
     public:
         void Display();
 
-        Gui(int &gridHeight, int &gridWidth, int &startCol, int &exitCol, float &vSpeed) : mazeGridWidth(gridWidth), mazeGridHeight(gridHeight), mazeStartCol(startCol), mazeExitCol(exitCol), visualizationSpeed(vSpeed) {
+        Gui(int &gridHeight, int &gridWidth, int &startCol, int &exitCol, float &vSpeed)  : mazeGridWidth(gridWidth), mazeGridHeight(gridHeight), mazeStartCol(startCol), mazeExitCol(exitCol), visualizationSpeed(vSpeed) {
             Init();
         };
 
@@ -87,7 +87,7 @@ class Gui {
         Algorithm usedAlg;
 
         Algorithm MainButtonHandler();
-         
+        bool BraidBool;
     private:    
         Rectangle LeftContext;
         Rectangle CenterContext;
@@ -188,6 +188,7 @@ class Gui {
                         char tempStr[2] = { (char)key, '\0' };
                         TextAppend(text, tempStr, &textLength);
                         value = TextToInteger(text);
+                        
                     }else if(IsKeyPressed(KEY_BACKSPACE)){
                         //deleting
                         if(textLength!=0){
@@ -254,6 +255,7 @@ class Gui {
         };
 
         int SettingsDescDisplayDelay;
+        float SettingsFunctionsDelay;
         bool SettingsVisible = false;
 
         InputBox gridRowsInput;
@@ -261,6 +263,8 @@ class Gui {
 
         InputBox startColInput;
         InputBox exitColInput;
+
+        Button Braid;
 
         InputBox vSpeedInput;
 

@@ -34,6 +34,7 @@ class Maze {
         vector<Section> deadEndPath;
         void ClearSolution();
         void ClearWalls();
+        void ConvertToBraid();
 
         enum Direction {
             LEFT,

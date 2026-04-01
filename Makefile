@@ -30,7 +30,7 @@ ifeq ($(OS),Windows_NT)
     PLATFORM_OS=WINDOWS
     export PATH := $(COMPILER_PATH):$(PATH)
     # Subsystem windows hides the console. Remove if you want console output.
-    CFLAGS += -Wl,--subsystem,windows
+#     CFLAGS += -Wl,--subsystem,windows
     LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
 endif
 

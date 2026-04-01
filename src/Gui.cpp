@@ -1,4 +1,5 @@
 #include "Gui.h"
+#include <iostream>
 
 const char* Gui::GetAlgorithmName(Gui::Algorithm alg) {
     switch (alg) {
@@ -71,7 +72,7 @@ void Gui::Init() {
     //Sidewinder
     this->genButtons[5] = Button{GetRectPosX(LEFT)+12, offsetY * 25.5f, smallBoxWidth-24, standardHeight, "Sidewinder", Sidewinder};
     //Random
-    this->genButtons[6] = Button{GetRectPosX(LEFT)+12, offsetY * 29, smallBoxWidth-24, standardHeight, "Random", Random};
+    this->genButtons[6] = Button{GetRectPosX(LEFT)+12, offsetY * 29, smallBoxWidth-24, standardHeight, "Random Noise", Random};
 
 
     //Generate Button
@@ -94,10 +95,12 @@ void Gui::Init() {
     this->startColInput = InputBox(1, mazeGridWidth, mazeStartCol+1);
     this->exitColInput = InputBox(1, mazeGridWidth, mazeExitCol+1);
 
+    this->Braid = Button{GetRectPosX(CENTER) + offsetX*11 + MeasureText("Delete Dead Ends:", KeepFontSizeEven(offsetX * 3)), offsetY*27.5f, offsetX * 9, offsetY * 3.5f, "False"};
+    this->Braid.ChangeColor({143, 17, 28, 255}, WHITE);
+
     this->vSpeedInput = InputBox(1, 10, visualizationSpeed);
 
     this->SaveSettings = Button{GetRectPosX(CENTER)+(GetRectArea(CENTER).x-offsetX*12)/2, GetRectPosY(CENTER)+GetRectArea(CENTER).y-offsetY*5, offsetX*12, offsetY*4, "SAVE"};
-
 
 
 
@@ -251,14 +254,17 @@ void Gui::Display() {
                 SettingsDescDisplayDelay = -1;
             }
             if(MazeButton.IsClicked()){
-                SettingsVisible = true;
                 AllButtonsLocked = true;
+                SettingsFunctionsDelay = GetTime();
+                SettingsVisible = true;
             }else{
                 AllButtonsLocked = false;
             }
         }
         if(SettingsVisible){
-            DisplaySettingsWindow();
+            if(GetTime()-SettingsFunctionsDelay>0.01){
+                DisplaySettingsWindow();
+            }
         }
         if(ImpossibleMessageVisible){
             // Showing on screen ALgorithm that failed Solving the maze
@@ -270,8 +276,8 @@ void Gui::Display() {
             if(SettingsDescDisplayDelay == -1){
                 SettingsDescDisplayDelay = GetTime();
             }
-            // for 3 seconds tooltip will be shown
-            if(GetTime() - SettingsDescDisplayDelay < 3){
+            // for 2 seconds tooltip will be shown
+            if(GetTime() - SettingsDescDisplayDelay < 2){
                 MazeButton.text = "\nPress Mouse Button\n      to CANCEL!";
                 MazeButton.DisplayRectangle(RED);
             }
@@ -393,6 +399,7 @@ void Gui::DisplaySettingsWindow() {
     float fontSize = KeepFontSizeEven(offsetX * 3);
     float titlePosX = GetRectPosX(CENTER) + offsetX * 5;
     float descPosX = GetRectPosX(CENTER) + offsetX * 8;
+
     //Centered Window Title:
     DrawText("Settings", GetRectPosX(CENTER) + (GetRectArea(CENTER).x - MeasureText("Settings", fontSize))/2, GetRectPosY(CENTER) + offsetY*1.5f, fontSize, WHITE);
 
@@ -433,11 +440,23 @@ void Gui::DisplaySettingsWindow() {
     exitColInput.Update(descPosX+MeasureText("Start Position:", fontSize)+offsetX*3, offsetY*23, offsetX * 5.6f, offsetY * 3);
     exitColInput.Display();
 
+    DrawText("Delete Dead Ends:", descPosX, offsetY*28, fontSize, WHITE);
+    if(Braid.IsClicked() && SettingsVisible){
+        if(TextIsEqual(Braid.text, "False")){
+            Braid.ChangeColor({27, 227, 84, 255}, WHITE);
+            Braid.text = "True";
+        }
+        else if(TextIsEqual(Braid.text, "True")){
+            Braid.ChangeColor({143, 17, 28, 255}, WHITE);
+            Braid.text = "False";
+        }
+    }
+    //TODO: Hover Braid Button
+    Braid.Display();
 
-    
-    DrawText("Visualization Speed:", titlePosX, offsetY*31, fontSize, WHITE);
-    DrawText("Steps per Second:", descPosX, offsetY*34.5f, fontSize, WHITE);
-    vSpeedInput.Update(descPosX+MeasureText("Number of Columns:", fontSize)+offsetX*4, offsetY*34, offsetX * 4.6f, offsetY * 3);
+    DrawText("Visualization Speed:", titlePosX, offsetY*35, fontSize, WHITE);
+    DrawText("Steps per Second:", descPosX, offsetY*38.5f, fontSize, WHITE);
+    vSpeedInput.Update(descPosX+MeasureText("Number of Columns:", fontSize)+offsetX*4, offsetY*38, offsetX * 4.6f, offsetY * 3);
     vSpeedInput.Display();
 
     bool correctInputs = false;
@@ -471,6 +490,12 @@ void Gui::DisplaySettingsWindow() {
         mazeExitCol = exitColInput.value-1;
 
         visualizationSpeed = vSpeedInput.value;
+        
+        if(TextIsEqual(Braid.text, "False")){
+            BraidBool = false;
+        }else if(TextIsEqual(Braid.text, "True")){
+            BraidBool = true;
+        }
 
     }else if(IsKeyPressed(KEY_ESCAPE)){
         SettingsVisible = false;

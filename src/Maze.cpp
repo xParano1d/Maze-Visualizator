@@ -1,4 +1,5 @@
 #include "Maze.h"
+#include <iostream>
 
 void Maze::ClearSolution() {
     ChangeEveryCellColor(WHITE);
@@ -31,6 +32,98 @@ void Maze::ClearWalls() {
     }
 }
 
+void Maze::ConvertToBraid() {
+    vector<CellPosition> stack;
+
+    for (int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++){
+            
+            if(i!=0 || i!=rows-1){
+                if(j!=0 || j!=columns-1){
+
+                    //*Dead ends detection:
+                    if(grid[i][j].wallCount() >=3){
+                        grid[i][j].color = {255, 0, 255, 130};
+                        //*Push to stack
+                        stack.push_back({i, j});
+                    }
+                }   
+            }
+
+        }
+    }
+    //*Check how many Dead ends maze have
+    int deadEndCount = stack.size();
+    float percentage = 0.4f;
+
+    int leftoverDeadEndCount = deadEndCount * (1 - percentage);
+    int deletedDeadEndCount = deadEndCount - leftoverDeadEndCount;
+    cout << stack.size() << ", " << leftoverDeadEndCount << ", " << deletedDeadEndCount<< endl;
+
+    while(stack.size() > deletedDeadEndCount){
+        //*Choose random Dead End from stack
+        int randomDeadEnd = GetRandomValue(0, stack.size());
+        int randomWall = GetRandomValue(0, 3);
+        
+        int currentRow = stack[randomDeadEnd].row;
+        int currentCol = stack[randomDeadEnd].col;
+        
+        Cell currentCell = grid[currentRow][currentCol];
+        
+        //*Check which walls are up
+        switch (randomWall){
+            case 0: //left
+                if(currentCell.leftWall){
+                    if(currentCol>0 && currentCol<=columns-1){ //boundary check
+                        //* Then remove random wall
+                        grid[currentRow][currentCol].leftWall = false;
+                        grid[currentRow][currentCol - 1].rightWall = false;
+                        //* and whole dead end from stack
+                        stack.erase(stack.begin()+randomDeadEnd);
+                        grid[currentRow][currentCol].color = {0, 175, 210, 130};
+                    }
+                }
+            break;
+
+            case 1: //right
+                if(currentCell.rightWall){
+                    if(currentCol>=0 && currentCol<columns-1){
+                        grid[currentRow][currentCol].rightWall = false;
+                        grid[currentRow][currentCol + 1].leftWall = false;
+                        stack.erase(stack.begin()+randomDeadEnd);
+                        grid[currentRow][currentCol].color = {0, 175, 210, 130};
+                    }
+                }
+            break;
+
+            case 2: //top 
+                if(currentCell.topWall){
+                    if(currentRow>0 && currentRow<=rows-1){
+                        grid[currentRow][currentCol].topWall = false;
+                        grid[currentRow-1][currentCol].bottomWall = false;
+                        stack.erase(stack.begin()+randomDeadEnd);
+                        grid[currentRow][currentCol].color = {0, 175, 210, 130};
+                    }
+                }
+            break;
+
+            case 3: //bottom
+                if(currentCell.bottomWall){
+                    if(currentRow>0 && currentRow<rows-1){
+                        grid[currentRow][currentCol].bottomWall = false;
+                        grid[currentRow-1][currentCol].topWall = false;
+                        stack.erase(stack.begin()+randomDeadEnd);
+                        grid[currentRow][currentCol].color = {0, 175, 210, 130};
+                    }
+                }
+            break;
+            
+            default:
+                break;
+        }
+    }
+}
+
 void Maze::CreateEmpty(int rows, int columns) {
     this->rows = rows;
     this->columns = columns;
@@ -46,7 +139,8 @@ void Maze::CreateEmpty(int rows, int columns) {
     }
 
     Generated = false;
-
+    Impossible = false;
+    
     Solved = false;
     solvePath.clear();
     deadEndPath.clear();

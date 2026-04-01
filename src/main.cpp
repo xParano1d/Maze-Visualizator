@@ -67,8 +67,8 @@ int main() {
     SetWindowPosition((GetMonitorWidth(currentMonitor) - screenWidth) / 2, (GetMonitorHeight(currentMonitor) - screenHeight) / 2);
     ClearWindowState(FLAG_WINDOW_HIDDEN);
 
-    Gui gui(gridHeight, gridWidth, startCol, exitCol, vSpeed);
     Maze maze;
+    Gui gui(gridHeight, gridWidth, startCol, exitCol, vSpeed);
 
     double time;
     double dt;  //delta time
@@ -222,7 +222,9 @@ int main() {
             }else{
                 maze.highlightRowEnabled = false;
             }
+
             time += dt;
+
             while(time >= stepDelay){
                 time -= stepDelay;
                 switch (gui.choosenAlgorithm){
@@ -294,6 +296,9 @@ int main() {
                     if((GetTime()-genTime>1 && algType) || (GetTime()-solveTime>1 && !algType && !maze.Impossible)){
                         if(!RandomMaze){
                             maze.ChangeEveryCellColor(WHITE);
+                            if(maze.Generated && algType  &&  gui.BraidBool){
+                                maze.ConvertToBraid();
+                            }
                         }
                         gui.ButtonsReadyToClick = true;
                         time = 0;
@@ -309,6 +314,7 @@ int main() {
                             gui.ImpossibleMessageVisible = true;
                         }
                     }
+
                 }else if(gui.choosenAlgorithm != Gui::Algorithm::None){
                     if(algType){
                         gui.genIterations++;

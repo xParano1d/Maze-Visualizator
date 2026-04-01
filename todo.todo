@@ -32,3 +32,6 @@
             ✔ Depth First Search (Backtracking) @done (1/9/2026, 8:36:27 PM)
             ✔ A* (A-Star) @done (1/11/2026, 4:37:03 PM)
             ☐ Trémaux 
+
+issues to fix:
+☐ while being inside settings menu the solve buttons doesn't lock at all

@@ -60,7 +60,7 @@ void Maze::ConvertToBraid() {
     int deletedDeadEndCount = deadEndCount - leftoverDeadEndCount;
     cout << stack.size() << ", " << leftoverDeadEndCount << ", " << deletedDeadEndCount<< endl;
 
-    while(stack.size() > deletedDeadEndCount){
+    while((int)stack.size() > deletedDeadEndCount){
         //*Choose random Dead End from stack
         int randomDeadEnd = GetRandomValue(0, stack.size());
         int randomWall = GetRandomValue(0, 3);
@@ -111,7 +111,7 @@ void Maze::ConvertToBraid() {
                 if(currentCell.bottomWall){
                     if(currentRow>0 && currentRow<rows-1){
                         grid[currentRow][currentCol].bottomWall = false;
-                        grid[currentRow-1][currentCol].topWall = false;
+                        grid[currentRow+1][currentCol].topWall = false;
                         stack.erase(stack.begin()+randomDeadEnd);
                         grid[currentRow][currentCol].color = {0, 175, 210, 130};
                     }

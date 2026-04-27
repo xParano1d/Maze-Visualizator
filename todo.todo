@@ -12,6 +12,7 @@
         ☐ export solution and generation as png, gif, txt, json
         ☐ load generated mazes from json 
         ✔ create an icon image for .exe file @done (2/2/2026, 1:32:02 AM)
+        ☐ info icon (about the program, authors, descriptio, guide maybe etc)
 
     Algorithms:
         Gen:
@@ -35,3 +36,8 @@
 
 issues to fix:
 ☐ while being inside settings menu the solve buttons doesn't lock at all
+☐ "uanble to solve" pop-up sometimes do not show and locks the app completely (whole system need some rework to be done)
+☐ wall follower don't mark wrong path sometime (when it doesn't have to go back but it does because of the loop [2x2 square section where you have entry from everywhere])
+☐ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG)
+☐ graphics improvement needed still
+☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1)

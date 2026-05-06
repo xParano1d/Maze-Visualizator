@@ -47,8 +47,8 @@ int main() {
 
     //*Maze:
     //Grid Size:
-    int gridHeight = 50;    // rows
-    int gridWidth = 50;     // columns
+    int gridHeight = 10;    // rows
+    int gridWidth = 10;     // columns
 
     //Start Position
     int startRow = 0;   //!DO NOT CHANGE: it should just be *0* for maze with top entrance and bottom exit
@@ -327,7 +327,7 @@ int main() {
             }
         }
 
-        maze.Display({startRow, startCol}, {exitRow, exitCol});
+        maze.Display(gui.CenterContext, {startRow, startCol}, {exitRow, exitCol});
         gui.Display();
         
         EndDrawing();

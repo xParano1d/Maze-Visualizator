@@ -134,13 +134,7 @@ void Maze::CreateEmpty(int rows, int columns) {
         this->grid[i].resize(columns);
 
         for (int j = 0; j < columns; j++){
-            if(i*j%4==1){
-                this->grid[i][j] = Cell{true, true, true, true, {0,200,90,60}};
-            }else if(i*j%4==3){
-                this->grid[i][j] = Cell{true, true, true, true, {0,100,90,180}};
-            }else{
-                this->grid[i][j] = Cell{true, true, true, true, {0,0,90,100}};
-            }
+            this->grid[i][j] = Cell{true, true, true, true, RED};
         }
     }
 
@@ -211,42 +205,44 @@ void Maze::UnvisitEveryCell() {
     }
 }
 
-void Maze::Display(CellPosition startPosition, CellPosition exitPosition) {
-    float centerX = (float)GetScreenWidth() / 2;                                            
-    float centerY = (float)GetScreenHeight() / 2;                                           
-    float aspectRatio = (float)GetScreenWidth() / (float)GetScreenHeight();                 
+void Maze::Display(Rectangle DrawingArea, CellPosition startPosition, CellPosition exitPosition) {
+    float padding = 20.0f;
+    float maxWidth = DrawingArea.width - (padding*2);
+    float maxHeight = DrawingArea.height - (padding*2);
 
-    float width = centerX;                                                                  
-    float height = centerY * aspectRatio;                                                   
-
-    int offsetX = width / columns;                                                          
-    int offsetY = height / rows;                                                            
-
-    float cellSize = fmin(offsetX, offsetY);                                                
-
-    int posX = centerX - width/2;                                                           
-    int posY = centerY - height/2;                                                          
-
-
-    float wallThickness = fmax(3.0f, fmin(cellSize * 0.2f, 6.0f));                          
-    float borderThickness = wallThickness+3*aspectRatio;                                    
+    float cellSize = fmin(maxWidth / columns, maxHeight / rows);
+    
+    float gridWidth = columns * cellSize;
+    float gridHeight = rows * cellSize;
+    
+    float posX = DrawingArea.x + (DrawingArea.width - gridWidth) / 2.0f;
+    float posY = DrawingArea.y + (DrawingArea.height - gridHeight) / 2.0f;
+    
+    float wallThickness = fmax(3.0f, fmin(cellSize * 0.2f, 6.0f));
+    float borderThickness = fmax(6.0f, fmin(cellSize * 0.4f, 16.0f));
 
     //? Background of a Grid
-    DrawRectangle(posX-borderThickness, posY-borderThickness, width+2*borderThickness, height+2*borderThickness, WHITE);
+    DrawRectangle(
+        (int)(posX - borderThickness), 
+        (int)(posY - borderThickness), 
+        (int)(gridWidth + borderThickness * 2), 
+        (int)(gridHeight + borderThickness * 2), 
+        WHITE
+    );
     
     //! Drawing Grid
     int startPosX = posX;
     int startPosY = posY;
-
+    
     for (int i = 0; i < this->rows; i++){
         for (int j = 0; j < this->columns; j++){
             //* Background of a Cell
-            DrawRectangle(posX, posY, offsetX, offsetY, grid[i][j].color);
+            DrawRectangle(posX, posY, ceil(cellSize), ceil(cellSize), grid[i][j].color);
             
-            posX = posX + offsetX;
+            posX = posX + cellSize;
         }
         posX = startPosX;
-        posY = posY + offsetY;
+        posY = posY + cellSize;
     }
 
 
@@ -274,41 +270,41 @@ void Maze::Display(CellPosition startPosition, CellPosition exitPosition) {
     for (int i = 0; i < this->rows; i++){
         for (int j = 0; j < this->columns; j++){
             // //* Drawing Walls
-            // if(this->grid[i][j].rightWall){
-            //     DrawRectangle(posX+offsetX-wallThickness/2, posY-wallThickness/2, wallThickness, offsetY+wallThickness, {255,2,0,60});         //! Right Wall
-            // }
-            // if(this->grid[i][j].leftWall){
-            //     DrawRectangle(posX-wallThickness/2, posY-wallThickness/2, wallThickness, offsetY + wallThickness, {255,2,0,60});               //! Left Wall
-            // }
-            // if(this->grid[i][j].topWall){
-            //     DrawRectangle(posX-wallThickness/2, posY-wallThickness/2, offsetX + wallThickness, wallThickness, {255,2,0,60});           //! Top Wall
-            // }
-            // if(this->grid[i][j].bottomWall){
-            //     DrawRectangle(posX-wallThickness/2, posY + offsetY-wallThickness/2, offsetX + wallThickness, wallThickness, {255,2,0,60}); //! Bottom Wall
-            // }
+            if(this->grid[i][j].rightWall){
+                DrawRectangle(posX+cellSize-wallThickness/2, posY-wallThickness/2, wallThickness, cellSize+wallThickness, BLACK);         //! Right Wall
+            }
+            if(this->grid[i][j].leftWall){
+                DrawRectangle(posX-wallThickness/2, posY-wallThickness/2, wallThickness, cellSize + wallThickness, BLACK);               //! Left Wall
+            }
+            if(this->grid[i][j].topWall){
+                DrawRectangle(posX-wallThickness/2, posY-wallThickness/2, cellSize + wallThickness, wallThickness, BLACK);           //! Top Wall
+            }
+            if(this->grid[i][j].bottomWall){
+                DrawRectangle(posX-wallThickness/2, posY + cellSize-wallThickness/2, cellSize + wallThickness, wallThickness, BLACK); //! Bottom Wall
+            }
             
-            posX = posX + offsetX;
+            posX = posX + cellSize;
         }
         posX = startPosX;
-        posY = posY + offsetY;
+        posY = posY + cellSize;
     }
 
     posX = startPosX;
     posY = startPosY;
 
-    float cellCenterX = offsetX / 2;
-    float cellCenterY = offsetY / 2;
+    float cellCenterX = cellSize / 2;
+    float cellCenterY = cellSize / 2;
 
     float pathThickness = wallThickness*1.4f;
 
     //Drawing Solution
     if(!deadEndPath.empty()){   //Grey Path (wrong path)
         for(Section sect : deadEndPath){
-            float AX = posX + cellCenterX + sect.A.col * offsetX;
-            float AY = posY + cellCenterY + sect.A.row * offsetY; 
+            float AX = posX + cellCenterX + sect.A.col * cellSize;
+            float AY = posY + cellCenterY + sect.A.row * cellSize; 
             
-            float BX = posX + cellCenterX + sect.B.col * offsetX;
-            float BY = posY + cellCenterY + sect.B.row * offsetY;
+            float BX = posX + cellCenterX + sect.B.col * cellSize;
+            float BY = posY + cellCenterY + sect.B.row * cellSize;
             
             DrawLineEx({AX, AY}, {BX, BY}, pathThickness, {108, 117, 148, 255});
         }
@@ -318,11 +314,11 @@ void Maze::Display(CellPosition startPosition, CellPosition exitPosition) {
         //* Drawing whole solution path:
         for(Section sect : solvePath){
     
-            float AX = posX + cellCenterX + sect.A.col * offsetX;
-            float AY = posY + cellCenterY + sect.A.row * offsetY; 
+            float AX = posX + cellCenterX + sect.A.col * cellSize;
+            float AY = posY + cellCenterY + sect.A.row * cellSize; 
             
-            float BX = posX + cellCenterX + sect.B.col * offsetX;
-            float BY = posY + cellCenterY + sect.B.row * offsetY;
+            float BX = posX + cellCenterX + sect.B.col * cellSize;
+            float BY = posY + cellCenterY + sect.B.row * cellSize;
             
             DrawLineEx({AX, AY}, {BX, BY}, pathThickness, {27, 227, 84, 255});
         }     
@@ -331,16 +327,16 @@ void Maze::Display(CellPosition startPosition, CellPosition exitPosition) {
         //* two Green lines
         //* 1.  from    the top edge of maze   to   the starting point of path
         DrawLineEx(
-            {(float)(posX+offsetX*startPosition.col + cellCenterX), (float)(posY+offsetY*startPosition.row)}, 
-            {(float)(posX+offsetX*startPosition.col + cellCenterX), (float)(posY+offsetY*startPosition.row + cellCenterY)}, 
+            {(float)(posX+cellSize*startPosition.col + cellCenterX), (float)(posY+cellSize*startPosition.row)}, 
+            {(float)(posX+cellSize*startPosition.col + cellCenterX), (float)(posY+cellSize*startPosition.row + cellCenterY)}, 
             pathThickness, 
             {27, 227, 84, 255}
         );
 
         //* 2.  from    ending point of path   to   the bottom edge of maze
         DrawLineEx(
-            {(float)(posX+offsetX*exitPosition.col + cellCenterX),(float)(posY+offsetY*exitPosition.row + cellCenterY)}, 
-            {(float)(posX+offsetX*exitPosition.col + cellCenterX), (float)(posY+offsetY*exitPosition.row + 2*cellCenterY)}, 
+            {(float)(posX+cellSize*exitPosition.col + cellCenterX),(float)(posY+cellSize*exitPosition.row + cellCenterY)}, 
+            {(float)(posX+cellSize*exitPosition.col + cellCenterX), (float)(posY+cellSize*exitPosition.row + 2*cellCenterY)}, 
             pathThickness, 
             {27, 227, 84, 255}
         );
@@ -348,7 +344,7 @@ void Maze::Display(CellPosition startPosition, CellPosition exitPosition) {
 
     //! Row Highlighting
     if(highlightRowEnabled){
-        DrawRectangle(posX, posY+highlightedRow*offsetY, width, offsetY, highlightColor);
+        DrawRectangle(posX, posY+highlightedRow*cellSize, gridWidth, cellSize, highlightColor);
     }
 }
 

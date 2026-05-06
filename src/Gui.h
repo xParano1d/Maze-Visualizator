@@ -88,9 +88,10 @@ class Gui {
 
         Algorithm MainButtonHandler();
         bool BraidBool;
+        
+        Rectangle CenterContext;
     private:    
         Rectangle LeftContext;
-        Rectangle CenterContext;
         Rectangle RightContext;
 
         int KeepFontSizeEven(float f);

@@ -74,7 +74,7 @@ class Maze {
         vector<vector<Cell>> grid;
         
         void CreateEmpty(int rows, int columns);
-        void Display(CellPosition startPosition = {-1, -1}, CellPosition exitPosition = {-1, -1});
+        void Display(Rectangle DrawingArea, CellPosition startPosition = {-1, -1}, CellPosition exitPosition = {-1, -1});
         
         void ChangeEveryCellColor(Color c);
         void HighlightRow(int row, Color c);

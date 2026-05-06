@@ -2,17 +2,18 @@
         ✔ step by step algorithms displaying @done (12/9/2025, 10:38:31 PM)
         ✔ Gui Settings (window size, maximize, grid size, speed, etc.) @done (1/31/2026, 4:34:53 AM)
         ☐ Gui Slider for Settings
-        ☐ Settings Change Perfect Maze to Braid Maze (Toggle) Button and Braiding percentage
         ☐ Settings CHOOSE Button for exit and start position
+        ✔ Settings Change Perfect Maze to Braid Maze (Toggle) Button @done (5/6/2026, 4:20:25 PM)
+        ☐ Settings Braid -> Braiding percentage
         ✔ Gui Gen time @done (11/11/2025, 7:22:08 PM)
         ✔ Gui Gen iterations @done (11/11/2025, 7:22:12 PM)
         ✔ Gui Solve time @done (12/14/2025, 8:02:50 PM)
         ✔ Gui Solve iterations @done (12/14/2025, 8:02:52 PM)
-        ☐ solve/gen time seconds -> minutes if needed
-        ☐ export solution and generation as png, gif, txt, json
-        ☐ load generated mazes from json 
+        ☐ solve/gen time seconds -> minutes if needed 
+        ☐ export solution and generation as png, gif, txt, json @critical
+        ☐ load generated mazes from json @critical
         ✔ create an icon image for .exe file @done (2/2/2026, 1:32:02 AM)
-        ☐ info icon (about the program, authors, descriptio, guide maybe etc)
+        ☐ info button and popup (about the program, authors, description, guide maybe etc.) 
 
     Algorithms:
         Gen:
@@ -32,16 +33,13 @@
             ✘ Dijkstra @cancelled (1/9/2026, 12:59:50 AM)
             ✔ Depth First Search (Backtracking) @done (1/9/2026, 8:36:27 PM)
             ✔ A* (A-Star) @done (1/11/2026, 4:37:03 PM)
-            ☐ Trémaux 
+            ☐ Trémaux @high 
 
 issues to fix:
-☐ while being inside settings menu the solve buttons doesn't lock at all
-☐ "uanble to solve" pop-up sometimes do not show and locks the app completely (whole system need some rework to be done)
-☐ wall follower don't mark wrong path sometime (when it doesn't have to go back but it does because of the loop [2x2 square section where you have entry from everywhere])
-☐ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG)
-☐ graphics improvement needed still
-☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1)
-
-
-export kroków do json i odtworzenie animacji
-zapis jakis png txt json serializacja bez zadnych baz ani niczego takiego
+    ✔ wall follower don't mark wrong path sometime (when it doesn't have to go back but it does because of the loop [2x2 square section where you have entry from everywhere]) @done (5/6/2026, 4:18:51 PM)
+    ✔ braid segmentation fault (whoops) @critical (Backtracking, Eller) @done (5/6/2026, 2:41:46 PM)
+    ✘ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG) @cancelled (5/6/2026, 1:20:48 PM) (it just appears after solve [ i dont care ])
+    ☐ while being inside settings menu the solve buttons doesn't lock at all @low 
+    ☐ "uanble to solve" pop-up sometimes do not show and locks the app completely (whole system need some rework to be done)
+    ☐ graphics improvement needed still
+    ☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1)

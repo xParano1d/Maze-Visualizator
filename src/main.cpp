@@ -42,13 +42,13 @@ int main() {
     
     //*---SETTINGS---*
     //*Screen:
-    int screenWidth = GetMonitorWidth(currentMonitor) / 1.4;
-    int screenHeight = GetMonitorHeight(currentMonitor) / 1.4;
+    int screenWidth = GetMonitorWidth(currentMonitor) / 1.3;
+    int screenHeight = GetMonitorHeight(currentMonitor) / 1.3;
 
     //*Maze:
     //Grid Size:
-    int gridHeight = 10;    // rows
-    int gridWidth = 10;     // columns
+    int gridHeight = 50;    // rows
+    int gridWidth = 50;     // columns
 
     //Start Position
     int startRow = 0;   //!DO NOT CHANGE: it should just be *0* for maze with top entrance and bottom exit

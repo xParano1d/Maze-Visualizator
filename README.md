@@ -7,14 +7,18 @@ TODO:
         ✔ step by step algorithms displaying @done (12/9/2025, 10:38:31 PM)
         ✔ Gui Settings (window size, maximize, grid size, speed, etc.) @done (1/31/2026, 4:34:53 AM)
         ☐ Gui Slider for Settings
-        ☐ Settings Change Perfect Maze to Braid Maze (Toggle) Button 
+        ☐ Settings CHOOSE Button for exit and start position
+        ✔ Settings Change Perfect Maze to Braid Maze (Toggle) Button @done (5/6/2026, 4:20:25 PM)
+        ☐ Settings Braid -> Braiding percentage
         ✔ Gui Gen time @done (11/11/2025, 7:22:08 PM)
         ✔ Gui Gen iterations @done (11/11/2025, 7:22:12 PM)
         ✔ Gui Solve time @done (12/14/2025, 8:02:50 PM)
         ✔ Gui Solve iterations @done (12/14/2025, 8:02:52 PM)
-        ☐ solve/gen time seconds -> minutes if needed
-        ☐ save as gif/png
+        ☐ solve/gen time seconds -> minutes if needed 
+        ☐ export solution and generation as png, gif, txt, json @critical
+        ☐ load generated mazes from json @critical
         ✔ create an icon image for .exe file @done (2/2/2026, 1:32:02 AM)
+        ☐ info button and popup (about the program, authors, description, guide maybe etc.) 
 
     Algorithms:
         Gen:
@@ -34,4 +38,4 @@ TODO:
             ✘ Dijkstra @cancelled (1/9/2026, 12:59:50 AM)
             ✔ Depth First Search (Backtracking) @done (1/9/2026, 8:36:27 PM)
             ✔ A* (A-Star) @done (1/11/2026, 4:37:03 PM)
-            ☐ Trémaux 
+            ☐ Trémaux @high 

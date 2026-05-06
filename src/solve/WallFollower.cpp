@@ -149,18 +149,35 @@ void WallFollower::Solve(Maze &maze) {
                 }
                 
             }
-
         
         if(previousRow != currentRow || previousCol != currentCol){
             
-            if (!maze.solvePath.empty() && maze.solvePath.back().A.row == currentRow && maze.solvePath.back().A.col == currentCol){
+            //Loop detection: Look for the current cell in our active path
+            int loopStartIndex = -1;
+            for (int i = 0; i < (int)maze.solvePath.size(); i++) {
+                // If we find our current position inside the active path, it's a loop!
+                if (maze.solvePath[i].A.row == currentRow && maze.solvePath[i].A.col == currentCol) {
+                    loopStartIndex = i;
+                    break;
+                }
+            }
 
-                maze.deadEndPath.push_back(maze.solvePath.back());
+            if (loopStartIndex != -1) {
+                // LOOP DETECTED!
+                // Move every segment of the loop into dead end stack
+                for (int i = loopStartIndex; i < (int)maze.solvePath.size(); i++) {
+                    maze.deadEndPath.push_back(maze.solvePath[i]);
 
-                maze.solvePath.pop_back();
+                }
+                // Add the missing wrong section to dead end stack
+                maze.deadEndPath.push_back({{previousRow, previousCol}, {currentRow, currentCol}});
+                
+                // Erase the loop from the active green path
+                maze.solvePath.erase(maze.solvePath.begin() + loopStartIndex, maze.solvePath.end());
 
             }else{
-
+                // LOOP NOT DETECTED!
+                // Just push path as a solution
                 maze.solvePath.push_back({{previousRow, previousCol}, {currentRow, currentCol}});
             }
 
@@ -173,7 +190,7 @@ void WallFollower::Solve(Maze &maze) {
             // Check for Impossible state
             if (currentRow == startRow && currentCol == startCol) {
                 startVisitsCounter++;
-                //since it starts there couter should be always 1 (in theory)
+                //since it starts there counter should be always 1 (in theory)
                 if(startVisitsCounter>4){
                     maze.Impossible = true;
                 }

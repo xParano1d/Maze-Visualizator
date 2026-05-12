@@ -148,7 +148,7 @@ int Gui::KeepFontSizeEven(float f){
 void Gui::Display() {
     //*LEFT CONTEXT*
     DrawRectangleLinesEx(LeftContext, 2, WHITE);
-    DrawText("Generation:", GetRectPosX(LEFT) + (GetRectArea(LEFT).x - MeasureText("Generation:", GetScreenWidth()*0.02))/2, GetRectPosY(LEFT) + this->offsetY, KeepFontSizeEven(GetScreenWidth()*0.02), WHITE);
+    DrawText("Generation:", GetRectPosX(LEFT) + (GetRectArea(LEFT).x - MeasureText("Generation:", KeepFontSizeEven(GetScreenWidth()*0.02)))/2, GetRectPosY(LEFT) + this->offsetY, KeepFontSizeEven(GetScreenWidth()*0.02), WHITE);
     
     for(Button btn : this->genButtons){
         if(btn.IsHovered() && !AllButtonsLocked){                            //hovered
@@ -194,22 +194,22 @@ void Gui::Display() {
 
     //*RIGHT CONTEXT*
     DrawRectangleLinesEx(RightContext, 2, WHITE);
-    DrawText("Solving:", GetRectPosX(RIGHT) + (GetRectArea(LEFT).x - MeasureText("Solving:", GetScreenWidth()*0.02))/2, GetRectPosY(RIGHT) + this->offsetY, KeepFontSizeEven(GetScreenWidth()*0.02), WHITE);
+    DrawText("Solving:", GetRectPosX(RIGHT) + (GetRectArea(LEFT).x - MeasureText("Solving:", KeepFontSizeEven(GetScreenWidth()*0.02)))/2, GetRectPosY(RIGHT) + this->offsetY, KeepFontSizeEven(GetScreenWidth()*0.02), WHITE);
     
     for(Button btn : this->solveButtons){
-        if(btn.IsHovered() && ReadytoSolve){                          //hovered
+        if(btn.IsHovered() && ReadytoSolve && !AllButtonsLocked){                          //hovered
             if(btn.text == ChosenSolve.text){
                 btn.ChangeColor({27, 227, 84, 255}, WHITE);
             }else{
                 btn.ChangeColor(RAYWHITE, BLACK);
             }
-        }else if(btn.text == ChosenSolve.text && ReadytoSolve){       //chosen
+        }else if(btn.text == ChosenSolve.text && ReadytoSolve && !AllButtonsLocked){       //chosen
             btn.ChangeColor({27, 227, 84, 255}, BLACK);
         }else{
-            if(ReadytoSolve && !AllButtonsLocked){
-                btn.ChangeColor({46, 52, 230, 255}, WHITE);      //base color
+            if(ReadytoSolve && !AllButtonsLocked && !AllButtonsLocked){
+                btn.ChangeColor({46, 52, 230, 255}, WHITE);                             //base color
             }else{
-                btn.ChangeColor({108, 117, 148, 255}, BLACK);    //locked
+                btn.ChangeColor({108, 117, 148, 255}, WHITE);                           //locked
             }
         }
         
@@ -228,11 +228,11 @@ void Gui::Display() {
     DrawText(solveIterationsCount, GetRectPosX(RIGHT) + offsetX, GetScreenHeight()-(GetRectPosY(RIGHT) + this->offsetY*6), KeepFontSizeEven(GetScreenWidth()*0.0106), WHITE);
     
     
-    if(StartSolvingButton.IsHovered() && choosenAlgorithm == Algorithm::None && ReadytoSolve){    //hovered allowed
+    if(StartSolvingButton.IsHovered() && choosenAlgorithm == Algorithm::None && ReadytoSolve && !AllButtonsLocked){     //hovered allowed
         StartSolvingButton.ChangeColor(RAYWHITE, BLACK);
-    }else if(choosenAlgorithm!=Algorithm::None || !ReadytoSolve){                                 //locked
+    }else if(choosenAlgorithm!=Algorithm::None || !ReadytoSolve || AllButtonsLocked){                                   //locked
         StartSolvingButton.ChangeColor({108, 117, 148, 255}, BLACK);
-    }else{                                                                                      //base color
+    }else if(!AllButtonsLocked){                                                                                        //base color
         StartSolvingButton.ChangeColor({46, 52, 230, 255}, WHITE);
     }
     StartSolvingButton.Display();

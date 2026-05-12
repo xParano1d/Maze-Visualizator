@@ -2,14 +2,17 @@
         ✔ step by step algorithms displaying @done (12/9/2025, 10:38:31 PM)
         ✔ Gui Settings (window size, maximize, grid size, speed, etc.) @done (1/31/2026, 4:34:53 AM)
         ☐ Gui Slider for Settings
-        ☐ Settings CHOOSE Button for exit and start position
+        ☐ Settings -> CHOOSE Button for exit and start position
         ✔ Settings Change Perfect Maze to Braid Maze (Toggle) Button @done (5/6/2026, 4:20:25 PM)
         ☐ Settings Braid -> Braiding percentage
+        ☐ Gen -> Prim -> choose starting point
+        ☐ Gen -> Random Noise -> choose density of black squares
+        ☐ Gen -> Backtracking -> choose starting point (?)
         ✔ Gui Gen time @done (11/11/2025, 7:22:08 PM)
         ✔ Gui Gen iterations @done (11/11/2025, 7:22:12 PM)
         ✔ Gui Solve time @done (12/14/2025, 8:02:50 PM)
         ✔ Gui Solve iterations @done (12/14/2025, 8:02:52 PM)
-        ☐ solve/gen time seconds -> minutes if needed 
+        ☐ solve/gen time seconds -> minutes if needed @low 
         ☐ export solution and generation as png, gif, txt, json @critical
         ☐ load generated mazes from json @critical
         ☐ solve path longevity info next to step count and stuff @high 
@@ -24,7 +27,7 @@
             ✔ Kruskal @done (12/14/2025, 12:22:27 AM)
             ✔ Eller? @done (1/22/2026, 6:46:31 PM)
             ✔ Sidewinder @done (2/2/2026, 2:35:40 AM)
-            ✔ Random Grid @done (2/1/2026, 10:07:33 PM)
+            ✔ Random Noise @done (2/1/2026, 10:07:33 PM)
 
         Solve:
             ✔ Wall Follower @done (12/27/2025, 7:27:26 PM)
@@ -39,9 +42,9 @@
 issues to fix:
     ✔ wall follower don't mark wrong path sometime (when it doesn't have to go back but it does because of the loop [2x2 square section where you have entry from everywhere]) @done (5/6/2026, 4:18:51 PM)
     ✔ braid segmentation fault (whoops) @critical (Backtracking, Eller) @done (5/6/2026, 2:41:46 PM)
-    ☐ Eller is doing some wild stuff to non equal mazes @critical
-    ☐ while being inside settings menu the solve buttons doesn't lock at all @high 
-    ✘ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG) @cancelled (5/6/2026, 1:20:48 PM) (it just appears after solve [ i dont care ])
-    ☐ "uanble to solve" pop-up sometimes do not show and locks the app completely (whole system need some rework to be done)
     ✔ graphics improvement needed still @done (5/7/2026, 1:47:21 AM)
-    ☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1)
+    ☐ with bigger mazes, solution path is way to thick @low 
+    ☐ Eller is doing some wild stuff to non equal mazes @critical
+    ✔ while being inside settings menu the solve buttons doesn't lock at all @high (turns out that it only happens when maze is generated) @done (5/12/2026, 11:42:06 PM)
+    ✘ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG) @cancelled (5/6/2026, 1:20:48 PM) (it just appears after solve [ i dont care ])
+    ☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1) [same with exit point and i am unable to replicate this bug consistantly]

@@ -15,6 +15,10 @@ class Gui {
 
         float &visualizationSpeed;
 
+        bool Maze_Generated;
+        bool Maze_Solved;
+    
+
         int tempCols;
         int tempStartC;
         int tempExitC;
@@ -87,9 +91,12 @@ class Gui {
         Algorithm usedAlg;
 
         Algorithm MainButtonHandler();
+        
         bool BraidBool;
+        void UpdateMazeState(bool Generated, bool Solved);
         
         Rectangle CenterContext;
+        int chosenFileExportAction = -1;
     private:    
         Rectangle LeftContext;
         Rectangle RightContext;
@@ -258,7 +265,10 @@ class Gui {
         int SettingsDescDisplayDelay;
         float SettingsFunctionsDelay;
         bool SettingsVisible = false;
+        Button CloseSettings;
 
+        
+        void DisplayConfig(int fontSize);
         InputBox gridRowsInput;
         InputBox gridColumnsInput;
 
@@ -269,7 +279,14 @@ class Gui {
 
         InputBox vSpeedInput;
 
-        Button SaveSettings;
+        void DisplayFile(int fontSize);
+        Button importGrid;
+        vector<Button> exportGrid;
+        vector<Button> exportSolution;
+        
 
+        void DisplayInfo(int fontSize);
+
+        int chosenSettingsTab = 0;
         void DisplaySettingsWindow();
 };

@@ -44,7 +44,7 @@ issues to fix:
     ✔ braid segmentation fault (whoops) @critical (Backtracking, Eller) @done (5/6/2026, 2:41:46 PM)
     ✔ graphics improvement needed still @done (5/7/2026, 1:47:21 AM)
     ☐ with bigger mazes, solution path is way to thick @low 
-    ☐ Eller is doing some wild stuff to non equal mazes @critical
+    ✔ Eller is doing some wild stuff to non equal mazes @critical @done (5/20/2026, 10:27:17 PM)
     ✔ while being inside settings menu the solve buttons doesn't lock at all @high (turns out that it only happens when maze is generated) @done (5/12/2026, 11:42:06 PM)
     ✘ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG) @cancelled (5/6/2026, 1:20:48 PM) (it just appears after solve [ i dont care ])
     ☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1) [same with exit point and i am unable to replicate this bug consistantly]

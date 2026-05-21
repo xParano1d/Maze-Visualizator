@@ -10,7 +10,7 @@ void Eller::Init(Maze &maze) {
 
 void Eller::Generate(Maze &maze) {
     if(!maze.Generated){ 
-        if(row < (int)maze.grid.size()-1 && columnIterator < (int)maze.grid[row].size()){ //? horizontal group merging
+        if(row < maze.rows-1 && columnIterator < maze.columns){ //? horizontal group merging
             //Join adjacent Cells at random
             int idA = maze.grid[row][columnIterator].groupID;
             int idB = maze.grid[row][columnIterator + 1].groupID;
@@ -20,7 +20,7 @@ void Eller::Generate(Maze &maze) {
             
             int random = GetRandomValue(1, 100);
             if(random%2==0){
-                if(columnIterator+1 < (int)maze.grid[row].size()){
+                if(columnIterator+1 < maze.columns){
                     if(idA != idB){
                         //Remove walls between Cells conecting them
                         maze.grid[row][columnIterator].rightWall = false;
@@ -38,7 +38,7 @@ void Eller::Generate(Maze &maze) {
             columnIterator++;
 
             //add every unique id to the stack
-            if(columnIterator == (int)maze.grid[row].size()){
+            if(columnIterator == maze.columns){
                 for (Maze::Cell c: maze.grid[row]) {
                     bool pass = true;
                     for(int g : groups){
@@ -52,12 +52,12 @@ void Eller::Generate(Maze &maze) {
                 }
             }
 
-        }else if(row != (int)maze.grid.size()-1){  //? vertical connections (only if row is not the last maze row)
+        }else if(row != maze.rows-1){  //? vertical connections (only if row is not the last maze row)
             if(!groups.empty()){
                 int random = GetRandomValue(0, (int)groups.size()-1);
                 vector<int> possibleColumns;
             
-                for(int i=0; i<(int)maze.grid.size(); i++){
+                for(int i=0; i<maze.columns; i++){
                     if(maze.grid[row][i].groupID == groups[random]){
                         possibleColumns.push_back(i);
 
@@ -96,14 +96,14 @@ void Eller::Generate(Maze &maze) {
 
         }else{
             //reset columnIterator one time at the start of last row 
-            if(columnIterator >= (int)maze.grid[row].size()-1){
+            if(columnIterator >= maze.columns-1){
                 columnIterator = 0;
             }
 
-            if(row == (int)maze.grid.size()-1){ //? Last row connections
+            if(row == maze.rows-1){ //? Last row connections
 
                 //joining every cell that do not share the same groupID
-                if(columnIterator+1 < (int)maze.grid[row].size()){
+                if(columnIterator+1 < maze.columns){
                     int idA = maze.grid[row][columnIterator].groupID;
                     int idB = maze.grid[row][columnIterator + 1].groupID;
                     //groupID check
@@ -121,7 +121,7 @@ void Eller::Generate(Maze &maze) {
                 }
 
                 //end check
-                if(columnIterator >= (int)maze.grid[row].size()-1){
+                if(columnIterator >= maze.columns-1){
                     maze.Generated = true;
                 }
             

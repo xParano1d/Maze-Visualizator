@@ -1,5 +1,4 @@
 #include "Maze.h"
-#include <iostream>
 
 void Maze::ClearSolution() {
     ChangeEveryCellColor(WHITE);
@@ -58,8 +57,7 @@ void Maze::ConvertToBraid() {
 
     int leftoverDeadEndCount = deadEndCount * (1 - percentage);
     int deletedDeadEndCount = deadEndCount - leftoverDeadEndCount;
-    cout << stack.size() << ", " << leftoverDeadEndCount << ", " << deletedDeadEndCount<< endl;
-
+    
     while((int)stack.size() > deletedDeadEndCount){
         //*Choose random Dead End from stack
         int randomDeadEnd = GetRandomValue(0, stack.size()-1);

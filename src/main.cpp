@@ -1,6 +1,7 @@
 #include <iostream>
 #include <raylib.h>
 #include "Gui.h"
+#include "MazeExporter.h"
 
 #include "./gen/Backtracking.h"
 #include "./gen/HuntnKill.h"
@@ -54,7 +55,7 @@ int main() {
     int startRow = 0;   //!DO NOT CHANGE: it should just be *0* for maze with top entrance and bottom exit
     int startCol = 0;
 
-   //Exit Position
+    //Exit Position
     int exitRow = gridHeight-1; //!DO NOT CHANGE: it should just be *gridHeight-1* for maze with top entrance and bottom exit
     int exitCol = gridWidth-1;
     
@@ -69,6 +70,7 @@ int main() {
 
     Maze maze;
     Gui gui(gridHeight, gridWidth, startCol, exitCol, vSpeed);
+    MazeExporter exporter(maze, startRow, startCol, exitRow, exitCol);
 
     double time;
     double dt;  //delta time
@@ -76,7 +78,7 @@ int main() {
 
     double genTime;
     double solveTime;
-    bool algType;       // true -> Gen  |  false -> solve
+    bool algType;       // true -> Gen  |  false -> Solve
 
     int tempW = 0;
     int tempH = 0;
@@ -105,7 +107,9 @@ int main() {
             stepDelay = targetDuration / (gridWidth*gridHeight);//Grid Size should be considered too
             tempVSpeed = vSpeed;
         }
-        
+
+        gui.UpdateMazeState(maze.Generated, maze.Solved);
+
         BeginDrawing();
         ClearBackground(BLACK);
 
@@ -329,7 +333,9 @@ int main() {
 
         maze.Display(gui.CenterContext, {startRow, startCol}, {exitRow, exitCol});
         gui.Display();
-        
+
+        exporter.Update(gui.chosenFileExportAction);
+
         EndDrawing();
     }
 

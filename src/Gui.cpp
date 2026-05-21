@@ -78,14 +78,16 @@ void Gui::Init() {
     //Generate Button
     this->StartGenButton = {GetRectPosX(LEFT)+8, GetScreenHeight()-offsetY*5, smallBoxWidth-16, standardHeight, "Start Generating"};
     
-
+    
     
     //*Center Box*
     //Settings Button (covering whole Center Box):
     this->MazeButton = {GetRectPosX(CENTER), GetRectPosY(CENTER), bigBoxWidth, boxHeight, "\nPress Mouse Button\nto Change Settings!"};
     this->MazeButton.ChangeColor({27, 227, 84, 0}, BLACK);
+    //Settings Close Button:
+    this->CloseSettings = Button{GetRectPosX(CENTER)+(GetRectArea(CENTER).x-offsetX*12)/2, GetRectPosY(CENTER)+GetRectArea(CENTER).y-offsetY*5, offsetX*12, offsetY*4, "CLOSE"};
     
-    //Settings Menu section:
+    //Settings Menu, CONFIG section:
     this->gridRowsInput = InputBox(2, 100, mazeGridHeight, 3);
     this->gridColumnsInput = InputBox(2, 100, mazeGridWidth, 3);
     this->tempCols = mazeGridWidth;
@@ -100,7 +102,19 @@ void Gui::Init() {
 
     this->vSpeedInput = InputBox(1, 10, visualizationSpeed);
 
-    this->SaveSettings = Button{GetRectPosX(CENTER)+(GetRectArea(CENTER).x-offsetX*12)/2, GetRectPosY(CENTER)+GetRectArea(CENTER).y-offsetY*5, offsetX*12, offsetY*4, "SAVE"};
+    //Settings Menu, FILE section:
+    this->importGrid = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/2 - offsetX*6, offsetY*14, offsetX*12, offsetY*3.5f, "IMPORT"};
+
+    this->exportGrid.resize(4);
+    this->exportGrid[0] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/9 + GetRectArea(CENTER).x/5*0, offsetY*26, offsetX*10, offsetY*3.5f, ".txt"};
+    this->exportGrid[1] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/9 + GetRectArea(CENTER).x/5*1, offsetY*26, offsetX*10, offsetY*3.5f, ".json"};
+    this->exportGrid[2] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/9 + GetRectArea(CENTER).x/5*2, offsetY*26, offsetX*10, offsetY*3.5f, ".png"};
+    this->exportGrid[3] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/9 + GetRectArea(CENTER).x/5*3, offsetY*26, offsetX*10, offsetY*3.5f, ".gif"};
+
+    this->exportSolution.resize(3);
+    this->exportSolution[0] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/5 + GetRectArea(CENTER).x/5*0, offsetY*37, offsetX*10, offsetY*3.5f, ".txt"};
+    this->exportSolution[1] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/5 + GetRectArea(CENTER).x/5*1, offsetY*37, offsetX*10, offsetY*3.5f, ".png"};
+    this->exportSolution[2] = Button{GetRectPosX(CENTER)+GetRectArea(CENTER).x/5 + GetRectArea(CENTER).x/5*2, offsetY*37, offsetX*10, offsetY*3.5f, ".gif"};
 
 
 
@@ -294,7 +308,12 @@ void Gui::Display() {
     }
 }
 
-void Gui::ChangeRectPosition(Context c, float x, float y){
+void Gui::UpdateMazeState(bool Generated, bool Solved) {
+    this->Maze_Generated = Generated;
+    this->Maze_Solved = Solved;
+}
+
+void Gui::ChangeRectPosition(Context c, float x, float y) {
     switch (c){
         case LEFT:
             this->LeftContext.x = x;
@@ -390,20 +409,102 @@ float Gui::GetRectPosY(Context c) {
 }
 
 void Gui::DisplaySettingsWindow() {
+    //Foreground Fade
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(/*to*/BLACK, 0.9f)); //!METTALICA REFERENCE
 
     Vector2 centerDimmensions = GetRectArea(CENTER);
+    float fontSize = KeepFontSizeEven(offsetX * 3);
+
+    
+    //* Gray Background and White outline
     DrawRectangle(GetRectPosX(CENTER), GetRectPosY(CENTER), centerDimmensions.x, centerDimmensions.y, {20, 22, 28, 255});
     DrawRectangleLinesEx(CenterContext, 2, WHITE);
 
-    float fontSize = KeepFontSizeEven(offsetX * 3);
-    float titlePosX = GetRectPosX(CENTER) + offsetX * 5;
+    //* Top Navigation Bar
+    Rectangle navBar = {GetRectPosX(CENTER), GetRectPosY(CENTER), centerDimmensions.x/3, GetRectPosY(CENTER) + offsetY * 3};
+    char tabTitles[3][7] = {"CONFIG", "FILE", "INFO"};
+    for (int i = 0; i < 3; i++){
+        DrawRectangleLinesEx(navBar, 2, WHITE);
+        
+        if(CheckCollisionPointRec(GetMousePosition(), navBar) && IsMouseButtonPressed(0)){
+            this->chosenSettingsTab = i;
+        }
+        Color textColor = WHITE;                 // normal 
+        if(this->chosenSettingsTab == i){
+            textColor = {27, 227, 84, 255};   // selected 
+        }
+        DrawText(tabTitles[i], navBar.x + navBar.width/2 - MeasureText(tabTitles[i], fontSize)/2, navBar.y+offsetY*0.8f, fontSize, textColor);
+
+        navBar.x += navBar.width;
+    }
+
+    switch(chosenSettingsTab){
+        case 0:
+            DisplayConfig(fontSize);
+        break;
+        
+        case 1:
+            DisplayFile(fontSize);
+        break;
+
+        case 2:
+            DisplayInfo(fontSize);
+        break;
+    }
+    
+
+
+    
+    //Inputs Validation:
+    bool correctInputs = false;
+    if(gridRowsInput.correctValue && gridColumnsInput.correctValue && vSpeedInput.correctValue && startColInput.correctValue && exitColInput.correctValue){
+        correctInputs = true;
+    }
+
+    //Save button:
+    if(CloseSettings.IsHovered() && correctInputs){              //hovered
+        CloseSettings.ChangeColor(RAYWHITE, BLACK);
+
+    }else if(!correctInputs){                                   //locked
+        CloseSettings.ChangeColor({143, 17, 28, 255}, BLACK);
+        //tooltip
+        DrawText("ERROR: INVALID INPUT WILL NOT BE SAVED!", GetRectPosX(CENTER) + (GetRectArea(CENTER).x - MeasureText("ERROR: INVALID INPUT WILL NOT BE SAVED!", fontSize*0.6f))/2, GetRectPosY(CENTER)+GetRectArea(CENTER).y-offsetY*7, fontSize*0.6f, {143, 17, 28, 255});
+
+    }else{                                                       //base color
+        CloseSettings.ChangeColor({27, 227, 84, 255}, WHITE);
+    }
+    CloseSettings.Display();
+
+    //exiting settings
+    if((CloseSettings.IsClicked() || IsKeyPressed(KEY_ESCAPE)) && correctInputs){
+        SettingsVisible = false;
+        
+        //get values and change settings 
+        mazeGridHeight = gridRowsInput.value;
+        mazeGridWidth = gridColumnsInput.value;
+
+        mazeStartCol = startColInput.value-1;
+        mazeExitCol = exitColInput.value-1;
+
+        visualizationSpeed = vSpeedInput.value;
+        
+        if(TextIsEqual(Braid.text, "False")){
+            BraidBool = false;
+        }else if(TextIsEqual(Braid.text, "True")){
+            BraidBool = true;
+        }
+
+    }else if(IsKeyPressed(KEY_ESCAPE)){
+        SettingsVisible = false;
+    }
+}
+
+
+void Gui::DisplayConfig(int fontSize){
+    float SectionPosX = GetRectPosX(CENTER) + offsetX * 5;
     float descPosX = GetRectPosX(CENTER) + offsetX * 8;
 
-    //Centered Window Title:
-    DrawText("Settings", GetRectPosX(CENTER) + (GetRectArea(CENTER).x - MeasureText("Settings", fontSize))/2, GetRectPosY(CENTER) + offsetY*1.5f, fontSize, WHITE);
-
-    DrawText("Maze:", titlePosX, offsetY*8, fontSize, WHITE);
+    DrawText("Maze:", SectionPosX, offsetY*8, fontSize, WHITE);
     
     DrawText("Number of Rows:", descPosX, offsetY*11, fontSize, WHITE);
     gridRowsInput.Update(descPosX+MeasureText("Number of Columns:", fontSize)+offsetX*3, offsetY*10.5f, offsetX * 5.6f, offsetY * 3);
@@ -454,50 +555,97 @@ void Gui::DisplaySettingsWindow() {
     //TODO: Hover Braid Button
     Braid.Display();
 
-    DrawText("Visualization Speed:", titlePosX, offsetY*35, fontSize, WHITE);
-    DrawText("Steps per Second:", descPosX, offsetY*38.5f, fontSize, WHITE);
+    DrawText("Visualization Speed:", SectionPosX, offsetY*35, fontSize, WHITE);
+    DrawText("Steps per Second:", descPosX, offsetY*38, fontSize, WHITE);
     vSpeedInput.Update(descPosX+MeasureText("Number of Columns:", fontSize)+offsetX*4, offsetY*38, offsetX * 4.6f, offsetY * 3);
     vSpeedInput.Display();
+}
 
-    bool correctInputs = false;
-    if(gridRowsInput.correctValue && gridColumnsInput.correctValue && vSpeedInput.correctValue && startColInput.correctValue && exitColInput.correctValue){
-        correctInputs = true;
+void Gui::DisplayFile(int fontSize) {
+    float SectionPosX = GetRectPosX(CENTER) + offsetX * 5;
+    float descPosX = GetRectPosX(CENTER) + offsetX * 8;
+
+    this->chosenFileExportAction = -1;
+    int chosenBtnId = 0;
+
+    DrawText("Import:", SectionPosX, offsetY*8, fontSize, WHITE);
+    DrawText("Choose json/txt File:", descPosX, offsetY*11, fontSize, WHITE);
+
+    if(importGrid.IsHovered()){              //hovered
+        importGrid.ChangeColor(RAYWHITE, BLACK);
+
+    }else{                                   //base color
+        importGrid.ChangeColor({27, 227, 84, 255}, WHITE);
     }
-
-    //Save button:
-    if(SaveSettings.IsHovered() && correctInputs){              //hovered
-        SaveSettings.ChangeColor(RAYWHITE, BLACK);
-
-    }else if(!correctInputs){                                   //locked
-        SaveSettings.ChangeColor({143, 17, 28, 255}, BLACK);
-        //tooltip
-        DrawText("ERROR: INVALID INPUT WILL NOT BE SAVED!", GetRectPosX(CENTER) + (GetRectArea(CENTER).x - MeasureText("ERROR: INVALID INPUT WILL NOT BE SAVED!", fontSize*0.6f))/2, GetRectPosY(CENTER)+GetRectArea(CENTER).y-offsetY*7, fontSize*0.6f, {143, 17, 28, 255});
-
-    }else{                                                       //base color
-        SaveSettings.ChangeColor({27, 227, 84, 255}, WHITE);
+    if(importGrid.IsClicked()){
+        this->chosenFileExportAction = 7;
     }
-    SaveSettings.Display();
+    importGrid.Display();
 
-    //exiting settings
-    if((SaveSettings.IsClicked() || IsKeyPressed(KEY_ESCAPE)) && correctInputs){
-        SettingsVisible = false;
-        
-        //get values and change settings 
-        mazeGridHeight = gridRowsInput.value;
-        mazeGridWidth = gridColumnsInput.value;
 
-        mazeStartCol = startColInput.value-1;
-        mazeExitCol = exitColInput.value-1;
+    DrawText("Export Grid Only:", SectionPosX, offsetY*20, fontSize, WHITE);
+    DrawText("to :", descPosX, offsetY*23, fontSize, WHITE);
+    // one next to the other
+    //TODO:"TXT" "JSON" "PNG" "GIF"
+    // with tooltip *loadable* next to txt and json
+    for(Button b : exportGrid){
+        if(b.IsHovered() && Maze_Generated){                //hovered
+            b.ChangeColor(RAYWHITE, BLACK);
 
-        visualizationSpeed = vSpeedInput.value;
-        
-        if(TextIsEqual(Braid.text, "False")){
-            BraidBool = false;
-        }else if(TextIsEqual(Braid.text, "True")){
-            BraidBool = true;
+        }else if(!Maze_Generated){
+            b.ChangeColor({108, 117, 148, 255}, WHITE);  //locked
+
+        }else{                                              //base color
+            b.ChangeColor({143, 17, 28, 255}, WHITE);
         }
+        b.Display();
 
-    }else if(IsKeyPressed(KEY_ESCAPE)){
-        SettingsVisible = false;
+        if(b.IsClicked() && Maze_Generated){
+            this->chosenFileExportAction = chosenBtnId;
+        }
+        chosenBtnId++;
     }
+
+
+    DrawText("Export Solution:", SectionPosX, offsetY*31, fontSize, WHITE);
+    DrawText("to :", descPosX, offsetY*34, fontSize, WHITE);
+    // one next to the other
+    //TODO: "TXT" "PNG" "GIF" 
+    for(Button b : exportSolution){
+        if(b.IsHovered() && Maze_Solved){                   //hovered
+            b.ChangeColor(RAYWHITE, BLACK);
+
+        }else if(!Maze_Solved){                             //locked
+            b.ChangeColor({108, 117, 148, 255}, WHITE);
+        }else{                                              //base color
+            b.ChangeColor({46, 52, 230, 255}, WHITE);
+        }
+        b.Display();
+
+        if(b.IsClicked() && Maze_Solved){
+            this->chosenFileExportAction = chosenBtnId;
+        }
+        chosenBtnId++;
+    }
+
+    if(chosenFileExportAction != -1){
+        std::cout << chosenFileExportAction << "\n";
+    }
+
+}
+
+void Gui::DisplayInfo(int fontSize) {
+    // float SectionPosX = GetRectPosX(CENTER) + offsetX * 5;
+    // float descPosX = GetRectPosX(CENTER) + offsetX * 8;
+
+    //app name
+    //created by
+    //nickname/name clickable->[my github page]
+
+    //year and maybe some info idk 
+    
+    //i could olso put info about algorithms on top here 
+    //  where you could maybe click on generation or solving
+    //      and learn more about algorithms and their behaviour
+
 }

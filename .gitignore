@@ -1,2 +1,6 @@
 ignored/
 *.exe
+*.txt
+*.json
+*.png
+*.gif

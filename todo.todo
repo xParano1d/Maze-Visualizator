@@ -14,10 +14,12 @@
         ✔ Gui Solve iterations @done (12/14/2025, 8:02:52 PM)
         ☐ solve/gen time seconds -> minutes if needed @low 
         ☐ export solution and generation as png, gif, txt, json @critical
+        ☐ export info popup on screen
         ☐ load generated mazes from json @critical
         ☐ solve path longevity info next to step count and stuff @high 
         ✔ create an icon image for .exe file @done (2/2/2026, 1:32:02 AM)
-        ☐ info button and popup (about the program, authors, description, guide maybe etc.) 
+        ✘ info button and popup (about the program, authors, description, guide maybe etc.) @cancelled (5/23/2026, 4:40:28 PM)
+        ☐ info tab in settings
 
     Algorithms:
         Gen:
@@ -48,3 +50,21 @@ issues to fix:
     ✔ while being inside settings menu the solve buttons doesn't lock at all @high (turns out that it only happens when maze is generated) @done (5/12/2026, 11:42:06 PM)
     ✘ with some algorithms solution path is drawn from end and it shows a starting point path first then it starts drawing backwards (AND ENDING POINT IS BEING SHOWN AT LAST OMG) @cancelled (5/6/2026, 1:20:48 PM) (it just appears after solve [ i dont care ])
     ☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1) [same with exit point and i am unable to replicate this bug consistantly]
+    ☐ close/exit app confirmation
+
+EXPORTER:
+    ☐ fix names of the files
+    grid:
+        ✔ export json @done (5/23/2026, 5:59:36 PM)
+        ✔ export txt @done (5/24/2026, 9:58:22 AM)
+        ☐ export png
+        ☐ export gif @low 
+    solution: 
+        ☐ export json
+        ☐ export txt
+        ☐ export png
+        ☐ export gif @low 
+    
+    import:
+        ☐ import json
+        ☐ import txt

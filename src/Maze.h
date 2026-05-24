@@ -9,6 +9,9 @@ class Maze {
     public:
         int rows;
         int columns;
+
+        int Seed;
+
         bool Generated;
         bool Solved;
         bool Impossible;

@@ -1,5 +1,4 @@
 #include "Gui.h"
-#include <iostream>
 
 const char* Gui::GetAlgorithmName(Gui::Algorithm alg) {
     switch (alg) {
@@ -627,11 +626,6 @@ void Gui::DisplayFile(int fontSize) {
         }
         chosenBtnId++;
     }
-
-    if(chosenFileExportAction != -1){
-        std::cout << chosenFileExportAction << "\n";
-    }
-
 }
 
 void Gui::DisplayInfo(int fontSize) {

@@ -39,22 +39,22 @@ int main() {
 
     int currentMonitor = GetCurrentMonitor();
     SetTargetFPS(GetMonitorRefreshRate(currentMonitor));
-    SetRandomSeed((unsigned int)time(NULL));
+
     
     //*---SETTINGS---*
     //*Screen:
     int screenWidth = GetMonitorWidth(currentMonitor) / 1.3;
     int screenHeight = GetMonitorHeight(currentMonitor) / 1.3;
-
+    
     //*Maze:
     //Grid Size:
     int gridHeight = 10;    // rows
     int gridWidth = 10;     // columns
-
+    
     //Start Position
     int startRow = 0;   //!DO NOT CHANGE: it should just be *0* for maze with top entrance and bottom exit
     int startCol = 0;
-
+    
     //Exit Position
     int exitRow = gridHeight-1; //!DO NOT CHANGE: it should just be *gridHeight-1* for maze with top entrance and bottom exit
     int exitCol = gridWidth-1;
@@ -62,15 +62,15 @@ int main() {
     //*Visualization:
     //Speed (in algorithm steps per second)
     float vSpeed = 10;  //(1-10) | higher value -> faster
-
+    
     
     SetWindowSize(screenWidth, screenHeight);
     SetWindowPosition((GetMonitorWidth(currentMonitor) - screenWidth) / 2, (GetMonitorHeight(currentMonitor) - screenHeight) / 2);
     ClearWindowState(FLAG_WINDOW_HIDDEN);
-
+    
     Maze maze;
     Gui gui(gridHeight, gridWidth, startCol, exitCol, vSpeed);
-    MazeExporter exporter(maze, startRow, startCol, exitRow, exitCol);
+    MazeExporter exporter(maze, startRow, startCol, exitRow, exitCol, gui.CenterContext);
 
     double time;
     double dt;  //delta time
@@ -202,6 +202,9 @@ int main() {
                     
                     gui.genTime = 0;
                     genTime = GetTime();
+
+                    maze.Seed = GetRandomValue(0, 9999999);
+                    SetRandomSeed(maze.Seed);
                     
                 }else{              //SOLVING
                     maze.ClearSolution();
@@ -334,7 +337,7 @@ int main() {
         maze.Display(gui.CenterContext, {startRow, startCol}, {exitRow, exitCol});
         gui.Display();
 
-        exporter.Update(gui.chosenFileExportAction);
+        exporter.Update(gui.chosenFileExportAction, vSpeed, gui.genIterations, gui.solveIterations);
 
         EndDrawing();
     }

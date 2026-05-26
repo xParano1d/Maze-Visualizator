@@ -1,8 +1,3 @@
-#**************************************************************************************************
-#   Raylib Makefile - ZERO CLUTTER VERSION (Windows Fix)
-#   Compiles everything in one go. No .o files saved to disk.
-#**************************************************************************************************
-
 .PHONY: all clean
 
 # --- CONFIGURATION ---
@@ -23,15 +18,15 @@ MAKE = mingw32-make
 
 # Compiler flags
 CFLAGS += -Wall -std=c++17 -D_DEFAULT_SOURCE -Wno-missing-braces
-CFLAGS += -g -O0  # Debug build
+CFLAGS += -g -O0 -static #Debug build
 
 # Windows specific settings
 ifeq ($(OS),Windows_NT)
     PLATFORM_OS=WINDOWS
     export PATH := $(COMPILER_PATH):$(PATH)
     # Subsystem windows hides the console. Remove if you want console output.
-#     CFLAGS += -Wl,--subsystem,windows
-    LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
+    CFLAGS += -Wl,--subsystem,windows
+    LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm -lcomdlg32 -lole32
 endif
 
 # Include and Library paths
@@ -45,6 +40,9 @@ rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst 
 # Automatically find ALL .cpp files in src folder and subfolders
 SRC = $(call rwildcard, src, *.cpp)
 
+# EXPLICITLY GRAB C/C++ LIBRARIES FROM THE LIB FOLDER
+LIB_SRC = lib/tinyfiledialogs.c
+
 # --- BUILD TARGETS ---
 
 all:
@@ -54,7 +52,7 @@ all:
 	windres icon/icon.rc -o temp_icon.o -I icon
 	
 	@echo 2. Compiling sources and linking executable...
-	$(CC) -o $(PROJECT_NAME)$(EXT) $(SRC) temp_icon.o $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(LDLIBS) -D$(PLATFORM)
+	$(CC) -o $(PROJECT_NAME)$(EXT) $(SRC) $(LIB_SRC) temp_icon.o $(CFLAGS) $(INCLUDE_PATHS) $(LDFLAGS) $(LDLIBS) -D$(PLATFORM)
 	
 	@echo 3. Cleaning temporary icon file...
 	del temp_icon.o

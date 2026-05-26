@@ -90,7 +90,12 @@ int main() {
         if (dt > 0.1f){
             dt = 0.1f; 
         }
-        
+
+        if(gui.triggerInputSync) {
+            gui.SyncInputs(maze.rows, maze.columns);
+            gui.triggerInputSync = false;
+        }
+
         if(tempH!=gridHeight || tempW!=gridWidth){
             tempW = gridWidth;
             tempH = gridHeight;
@@ -197,6 +202,11 @@ int main() {
                 if(algType){        //GENERATION
                     RandomMaze = (gui.choosenAlgorithm == Gui::Algorithm::Random);
 
+                        if (startRow >= maze.rows) startRow = maze.rows - 1;
+                        if (startCol >= maze.columns) startCol = maze.columns - 1;
+                        if (exitRow >= maze.rows) exitRow = maze.rows - 1;
+                        if (exitCol >= maze.columns) exitCol = maze.columns - 1;
+
                     gui.genIterations = 0;
                     gui.genIterations++;
                     
@@ -297,7 +307,6 @@ int main() {
                 
                 //if        Generated          or            Solved          or            Impossible
                 if((maze.Generated && algType) || (maze.Solved && !algType) || (maze.Impossible && !algType)){
-                    gui.ReadytoSolve = maze.Generated;
                     gui.choosenAlgorithm = Gui::Algorithm::None;
 
                     if((GetTime()-genTime>1 && algType) || (GetTime()-solveTime>1 && !algType && !maze.Impossible)){
@@ -336,8 +345,8 @@ int main() {
 
         maze.Display(gui.CenterContext, {startRow, startCol}, {exitRow, exitCol});
         gui.Display();
-
-        exporter.Update(gui.chosenFileExportAction, vSpeed, gui.genIterations, gui.solveIterations);
+        gui.ReadytoSolve = maze.Generated;
+        exporter.Update(gui.chosenFileExportAction, gui.choosenAlgorithm, vSpeed, gui.genIterations, gui.solveIterations);
 
         EndDrawing();
     }

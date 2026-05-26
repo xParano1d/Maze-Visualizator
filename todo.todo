@@ -13,13 +13,10 @@
         ✔ Gui Solve time @done (12/14/2025, 8:02:50 PM)
         ✔ Gui Solve iterations @done (12/14/2025, 8:02:52 PM)
         ☐ solve/gen time seconds -> minutes if needed @low 
-        ☐ export solution and generation as png, gif, txt, json @critical
-        ☐ export info popup on screen
-        ☐ load generated mazes from json @critical
         ☐ solve path longevity info next to step count and stuff @high 
         ✔ create an icon image for .exe file @done (2/2/2026, 1:32:02 AM)
         ✘ info button and popup (about the program, authors, description, guide maybe etc.) @cancelled (5/23/2026, 4:40:28 PM)
-        ☐ info tab in settings
+        ✔ info tab in settings @done (5/26/2026, 11:24:42 PM)
         ☐ close/exit app confirmation
 
     Algorithms:
@@ -53,17 +50,18 @@ issues to fix:
     ☐ settings->starting point sometimes adds aditional digit for no reason at all (showing starting point 2 when its 1) [same with exit point and i am unable to replicate this bug consistantly]
 
 EXPORTER:
-    ☐ fix names of the files
+    ✔ fix names of the files @done (5/26/2026, 11:24:32 PM)
+    ✔ export successfull popup @done (5/26/2026, 7:57:19 PM)
     grid:
         ✔ export json @done (5/23/2026, 5:59:36 PM)
         ✔ export txt @done (5/24/2026, 9:58:22 AM)
         ✔ export png @done (5/24/2026, 8:50:33 PM)
-        ☐ export gif @low 
+        ✔ export gif @low @done (5/26/2026, 3:24:34 PM)
     solution: 
         ✔ export txt @done (5/24/2026, 10:08:43 PM)
         ✔ export png @done (5/24/2026, 8:56:17 PM)
-        ☐ export gif @low 
+        ✔ export gif @low @done (5/26/2026, 7:22:02 PM)
     
     import:
-        ☐ import json
-        ☐ import txt
+        ✔ import json @done (5/26/2026, 9:00:25 PM)
+        ✔ import txt @done (5/26/2026, 9:00:27 PM)

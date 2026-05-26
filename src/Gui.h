@@ -91,7 +91,13 @@ class Gui {
         Algorithm usedAlg;
 
         Algorithm MainButtonHandler();
-        
+
+        bool triggerInputSync = false;
+        void SyncInputs(int rows, int cols) {
+            gridRowsInput.value = rows;
+            gridColumnsInput.value = cols;
+        }
+
         bool BraidBool;
         void UpdateMazeState(bool Generated, bool Solved);
         
@@ -269,6 +275,7 @@ class Gui {
 
         
         void DisplayConfig(int fontSize);
+        
         InputBox gridRowsInput;
         InputBox gridColumnsInput;
 

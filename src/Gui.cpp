@@ -258,8 +258,8 @@ void Gui::Display() {
                 if(SettingsDescDisplayDelay == -1){
                     SettingsDescDisplayDelay = GetTime();
                 }
-                // for 3 seconds tooltip will be shown
-                if(GetTime() - SettingsDescDisplayDelay < 3){
+                // for 2 seconds tooltip will be shown
+                if(GetTime() - SettingsDescDisplayDelay < 2){
                     MazeButton.text = "\nPress Mouse Button\n to Change Settings!";
                     MazeButton.DisplayRectangle({27, 227, 84, 255});
                 }
@@ -290,7 +290,7 @@ void Gui::Display() {
                 SettingsDescDisplayDelay = GetTime();
             }
             // for 2 seconds tooltip will be shown
-            if(GetTime() - SettingsDescDisplayDelay < 2){
+            if(GetTime() - SettingsDescDisplayDelay < 1){
                 MazeButton.text = "\nPress Mouse Button\n      to CANCEL!";
                 MazeButton.DisplayRectangle(RED);
             }
@@ -427,6 +427,7 @@ void Gui::DisplaySettingsWindow() {
         
         if(CheckCollisionPointRec(GetMousePosition(), navBar) && IsMouseButtonPressed(0)){
             this->chosenSettingsTab = i;
+            triggerInputSync = true;
         }
         Color textColor = WHITE;                 // normal 
         if(this->chosenSettingsTab == i){
@@ -451,8 +452,6 @@ void Gui::DisplaySettingsWindow() {
         break;
     }
     
-
-
     
     //Inputs Validation:
     bool correctInputs = false;
@@ -629,15 +628,36 @@ void Gui::DisplayFile(int fontSize) {
 }
 
 void Gui::DisplayInfo(int fontSize) {
-    // float SectionPosX = GetRectPosX(CENTER) + offsetX * 5;
-    // float descPosX = GetRectPosX(CENTER) + offsetX * 8;
+    float center = GetScreenWidth()/2;
+    float appNameFontSize = fontSize * 1.7f;
+    float authorFontSize = fontSize * 1.3f;
+    float smallInfoFontSize = fontSize * 0.4f;
+
+    int currentHue = (int)(GetTime() * 100.0) % 360;
+    Color rainbowColor = ColorFromHSV((float)currentHue, 0.7f, 1.0f);
 
     //app name
+    DrawText("Maze Visualizator", center-MeasureText("Maze Visualizator", appNameFontSize)/2, offsetY*14, appNameFontSize, rainbowColor);
+    DrawText("v1.0", center+MeasureText("Maze Visualizator", appNameFontSize)/2-20, offsetY*14+fontSize, smallInfoFontSize, WHITE);
+
     //created by
-    //nickname/name clickable->[my github page]
+    DrawText("Author:", center-MeasureText("Author:", fontSize)/2, offsetY*25, fontSize, WHITE);
+    
+    
+    Rectangle author = {center-MeasureText("Parano1d", authorFontSize)/2, offsetY*27, (float)MeasureText("Parano1d", authorFontSize), authorFontSize};
+    if(CheckCollisionPointRec(GetMousePosition(), author)){
+        if(IsMouseButtonPressed(0) || IsMouseButtonPressed(0)){
+            OpenURL("https://github.com/xParano1d");
+            DrawText("Parano1d", center-MeasureText("Parano1d", authorFontSize)/2, offsetY*27+5, authorFontSize, WHITE);
+        }else{
+            DrawText("Parano1d", center-MeasureText("Parano1d", authorFontSize)/2, offsetY*27, authorFontSize, rainbowColor);
+        }
+    }else{
+        DrawText("Parano1d", center-MeasureText("Parano1d", authorFontSize)/2, offsetY*27, authorFontSize, RED);
+    }
 
     //year and maybe some info idk 
-    
+    DrawText("05/2026", center-MeasureText("05/2026", smallInfoFontSize)/2, GetRectArea(CENTER).y-offsetY*5.5f, smallInfoFontSize, DARKGRAY);
     //i could olso put info about algorithms on top here 
     //  where you could maybe click on generation or solving
     //      and learn more about algorithms and their behaviour
